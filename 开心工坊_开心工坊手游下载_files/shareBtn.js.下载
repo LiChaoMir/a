@@ -1,0 +1,140 @@
+﻿$(function () {
+	if ($(".backToTop").length == 0 && $(".s-head").length == 0 && $("#bdshare").length == 0) {
+		//navRight();
+	}
+})
+/*
+function navRight() {
+	//if(TempVar==0)return false;
+	var Qtxts = '<div class="float_btn"><li id="gotops"><a href="javascript:;" title="回到顶部" rel="nofollow"></a></li><li id="ewm" ><a href="javascript:;" title="二维码" rel="nofollow"></a><i></i><em><img src="//tool.hackhome.com/qrcode.ashx?size=3&text=' + escape(location.href) + '"><u>扫描立即进入手机端</u></em></li><li id="pinglun" ><a href="javascript:;" title="我要评论" rel="nofollow"></a></li><li class="share_btn"><a href="javascript:;" title="一键分享" rel="nofollow"></a><p id="bdshare"><span class="sinaGFoot-share bdsharebuttonbox"><a data-cmd="tqq" class="a7" href="javascript:void 0" title="分享到QQ好友"></a><a data-cmd="qzone" class="a1" href="javascript:void 0"  title="分享到QQ空间"></a><a data-cmd="tsina" class="a2" title="分享到新浪微博" href="javascript:void 0"></a><a data-cmd="sqq" class="a3" href="javascript:void 0" title="分享到腾讯微博"></a><a href="javascript:void 0" class="a4" title="分享到人人网" data-cmd="renren"></a><a data-cmd="tieba" class="a6" href="javascript:void 0" title="分享到百度贴吧"></a></span></p></li></div>';
+	$('body').append(Qtxts);
+	$('.float_btn li#ewm').hover(function () {
+		$(this).addClass("hover").siblings().removeClass('hover');
+	}, function () {
+		$(this).removeClass("hover");
+	});
+	$('#gotops').click(function () {
+		$('body,html').animate({
+			'scrollTop': 0
+		}, 1000);
+	});
+	$('#pinglun').click(function () {
+		$('body,html').animate({
+			'scrollTop': $('body').height()
+		}, 1000);
+	});
+	$('.share_btn').hover(function () {
+		$(this).addClass('hover');
+	}, function () {
+		$(this).removeClass('hover');
+	});
+	$(".share_btn").mouseover(function (e) {
+		$(this).find("p").css("display", "block");
+	}).mouseout(function (e) {
+		$(this).find("a").show();
+		$(this).find("p").hide();
+	});
+	$(window).scroll(function () {
+		if ($(window).scrollTop() > 100) {
+			$('#gotops').show();
+		} else {
+			$('#gotops').hide();
+		};
+	});
+	if ($('#gotop').length > 0) {
+		$('#gotop').remove();
+	}
+
+	var sT = document.title.replace(/\s?\-.*?$/, ''),
+	sD = $('[name=description]').attr('content'),
+	sU = location.href,
+	sH = location.host,
+	sP = $('.htmlcontent img').attr('src') || '',
+	sP = (sP.indexOf('/') == 0) ? 'https://www.hackhome.com' + sP : sP,
+	sK = $('#bdshare'),
+	tU = '',
+	tB = true,
+	sT = encodeURI(sT),
+	sD = encodeURI(sD),
+	sU = encodeURI(sU),
+	sP = encodeURI(sP);
+	sK.find('a').click(function () {
+		var theTP = $(this).attr('data-cmd');
+		switch (theTP) {
+		case 'sqq':
+			tU = 'https://connect.qq.com/widget/shareqq/index.html?url=' + sU + '&desc=' + sD + '&pics=' + sP + '&site=bshare';
+			break;
+		case 'qzone':
+			tU = 'https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=' + sU + '&title=' + sT + '&pics=' + sP + '&summary=' + sD + '&desc=' + sD + '';
+			break;
+		case 'tsina':
+			tU = 'http://service.weibo.com/share/share.php?title=' + sD + '&url=' + sU + '&retcode=0&pic=' + sP + '';
+			break;
+		case 'tqq':
+			tU = 'http://v.t.qq.com/share/share.php?title=' + sD + '&site=' + sH + '&pic=' + sP + '&url=' + sU + '';
+			break;
+		case 'tieba':
+			tU = 'http://tieba.baidu.com/f/commit/share/openShareApi?title=' + sT + '&desc=' + sD + '&comment=' + sD + '&pic=' + sP + '&url=' + sU + '';
+			break;
+		case 'renren':
+			tU = 'http://widget.renren.com/dialog/share?resourceUrl=' + sU + '&srcUrl=' + sU + '&title=' + sT + '&images=' + sP + '&description=' + sD + '';
+		}
+		if (tB) {
+			window.open(tU);
+		}
+	});
+}
+$(function () {})
+*/
+
+
+document.writeln('<div class="share-custom">')
+document.writeln('<a title="分享到QQ好友" class="qqim"></a>')
+document.writeln('<a title="分享到QQ空间" class="qzone"></a>')
+document.writeln('<a title="分享到新浪微博" class="sinaw"></a>')
+document.writeln('<a title="分享到腾讯微博" class="qqmb"></a>')
+document.writeln('<a title="分享到百度贴吧" class="bdtb"></a>')
+document.writeln('<a title="分享到人人网" class="renren"></a>')
+document.writeln('</div>');
+
+$(function () {
+	var sT = document.title.replace(/\s?\-.*?$/, ''),
+	sD = $('[name=description]').attr('content'),
+	sU = location.href,
+	sH = location.host,
+	sP = $("#bdshare").length > 0 ? $(".con_art img").attr('src') : $('.snapShotCont li img').attr('src'),
+	sK = $('.share-custom'),
+	tU = '',
+	tB = true,
+	sT = encodeURI(sT),
+	sD = encodeURI(sD),
+	sU = encodeURI(sU),
+	sP = encodeURI(sP);
+	sK.find('a').click(function () {
+		var theTP = $(this).attr('class');
+		switch (theTP) {
+		case 'qqim':
+			tU = 'https://connect.qq.com/widget/shareqq/index.html?url=' + sU + '&desc=' + sD + '&pics=' + sP + '&site=bshare';
+			break;
+		case 'qzone':
+			tU = 'https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=' + sU + '&title=' + sT + '&pics=' + sP + '&summary=' + sD + '&desc=' + sD + '';
+			break;
+		case 'sinaw':
+			tU = 'http://service.weibo.com/share/share.php?title=' + sD + '&url=' + sU + '&retcode=0&pic=' + sP + '';
+			break;
+		case 'qqmb':
+			tU = 'http://v.t.qq.com/share/share.php?title=' + sD + '&site=' + sH + '&pic=' + sP + '&url=' + sU + '';
+			break;
+		case 'bdtb':
+			tU = 'http://tieba.baidu.com/f/commit/share/openShareApi?title=' + sT + '&desc=' + sD + '&comment=' + sD + '&pic=' + sP + '&url=' + sU + '';
+			break;
+		case 'renren':
+			tU = 'http://widget.renren.com/dialog/share?resourceUrl=' + sU + '&srcUrl=' + sU + '&title=' + sT + '&images=' + sP + '&description=' + sD + '';
+		}
+		if (tB) {
+			window.open(tU);
+		}
+	});
+})
+
+
