@@ -1,0 +1,508 @@
+﻿//jquery插件，模拟PlaceHolder效果（输入框需设置data-holder属性，如：data-holder="提示文字"）
+(function(jQuery){
+        jQuery.placeHolder = function(jQuerywraper){
+            var jQueryitems;
+            var isHackIe67 = false;
+
+            if(jQuerywraper){
+                jQueryitems = jQuerywraper.find("input[data-holder], textarea[data-holder]");
+            }else{
+                jQueryitems = jQuery("input[data-holder], textarea[data-holder]");
+            }
+
+            jQueryitems.each(function(){
+                var jQuerythat = jQuery(this);
+
+                //hack ie6、7，解决ie6、7不跟随滚动的bug（把父容器为overflow:auto的元素也设置为position:relative）
+                if(!isHackIe67){
+                    var jQueryoverflowAotuEles = jQuerythat.parents().filter(function(){return jQuery(this).css("overflow").toLowerCase() === "auto"});
+                    if(jQueryoverflowAotuEles.length > 0){
+                        jQueryoverflowAotuEles.eq(0).css({position: "relative"});
+                        isHackIe67 = true;
+                    }
+                }
+
+                if(!jQuerythat.next(".holder").length){
+					if(jQuerythat.val() == "" && jQuerythat.attr('data-holder') != ""){
+						var cssfloat = jQuerythat.css("float");
+						jQuerythat.wrap('<span class="holderBox" style="position:relative;zoom:1;overflow:hidden;display:inline-block;float:'+ cssfloat +'"></span>');
+						jQuerythat.after('<span class="holder">'+ jQuerythat.attr("data-holder") +'</span>');	
+					}
+                }
+
+                var jQueryholder = jQuerythat.next(".holder");
+                jQueryholder.css({fontSize: jQuerythat.css("fontSize")});
+                var pos = jQuerythat.position();
+
+                if(jQuerythat.get(0).tagName.toLowerCase() === "textarea"){
+                    jQueryholder.css({top: (pos.top + parseInt(jQuerythat.css("paddingTop"))) + "px" });
+                }else{
+                    jQueryholder.css({top: pos.top, lineHeight: jQuerythat.outerHeight() + "px"});
+                }
+
+                var x = (pos.left + parseInt(jQuerythat.css("paddingLeft"))) + "px";
+				//20140422 修复IE6/IE7下文字两行以上超出textArea右边框的BUG
+				if(jQuerythat.get(0).tagName.toLowerCase() === "textarea"){
+					var holderWid = jQuerythat.parent().find('textarea').width()+"px";
+					jQueryholder.css({position: "absolute", left: x, color: "#cccccc" , "display":"block" , "width": holderWid});
+				}else{
+					var holderWid = jQuerythat.parent().find('input').width()+"px";
+                	jQueryholder.css({position: "absolute", left: x, color: "#cccccc", "display":"block" , "width": holderWid});
+				}
+
+                jQuerythat.focus(function(){
+                    if(jQuery.trim(jQuery(this).val()) == ""){
+                        jQueryholder.hide();
+                    }
+                }).blur(function(){
+                        if(jQuery.trim(jQuery(this).val()) == ""){
+                            jQueryholder.show();
+                        }
+                    });
+
+                jQueryholder.click(function(){
+					//修复输入框被禁用时，点击提示文字消失BUG
+					if(jQuerythat.attr("disabled")!="disabled"){
+                    	jQuery(this).hide();
+                    	jQuerythat.focus();
+					}
+                });
+            });
+        };
+    })(jQuery);
+	
+	
+//模块固定插件  
+//调用jQuery.fixed({boxID:"外置盒子ID",width:"1010", bottom: "205", speed: 300, eleId: "fixedBox",function(){回调}});  
+(function(jQuery){
+    jQuery.fixed = function(option){
+        var jQuerywindow = jQuery(window);
+        var posX;
+        var posY;
+        var config = {
+			boxID: "__fixedBox",
+            width: "1000",    //网页主体宽度
+            bottom: "20",     //距底部高度
+            html: "",        //被固定的html内容
+            eleId: false,        //被固定的元素Id
+			callback:function(){}
+        };
+
+        if(option){jQuery.extend(config, option);}
+
+        if(jQuery("#"+config.boxID).length === 0){
+            jQuery("body").append('<div id="'+config.boxID+'" style="width:'+ config.width +'px;z-index:9999"></div>');
+        }
+
+        var jQueryfixedBox = jQuery("#"+config.boxID);
+
+        if(config.html != ""){
+            jQueryfixedBox.html(config.html);
+        }else if(config.eleId){
+            var jQueryele = jQuery("#"+ config.eleId);
+            if(jQueryele.length > 0){
+                jQueryele.appendTo(jQueryfixedBox);
+            }
+        }
+
+        var winHeight = parseInt(jQuery(window).height());
+        var init = function(){
+            posX = (jQuerywindow.width()*0.5) - (config.width*0.5);
+            if(!ISFIXED){
+                posY = jQuerywindow.scrollTop() + jQuerywindow.height() - jQueryfixedBox.outerHeight() - config.bottom;
+            }else{
+                posY =  jQuerywindow.height() - jQueryfixedBox.outerHeight() - config.bottom;
+            }
+
+            if(!ISFIXED){
+                jQueryfixedBox.css({"position": "absolute", "top": posY, "left": posX});
+            }else{
+                jQueryfixedBox.css({"position": "fixed", "top": posY, "left": posX});
+
+            }
+
+        };
+
+        init();
+
+        jQuerywindow.on("load scroll resize", function(){
+            init();
+        });
+		
+		if(jQuery.isFunction(config.callback)){config.callback();}//回调方法
+		
+        return this;
+    }
+})(jQuery);
+
+(function(jQuery){
+    //jQuery.alertTip({tar:obj,type:string,str:string})
+    //tar 触发对象，用于获取坐标  type 类型 ["en","ok","no"]  str 提示文本
+    jQuery.alertTip = function(option){
+        var config = {
+            tar: false,
+            type: false,    //网页主体宽度
+            str: false
+        };
+        if(option){jQuery.extend(config, option);}
+        var html = '<div class="tip_alert_content F_alert_tip" style="display:none">'+
+                    '<div class="tip_alert_bf"></div>'+
+                    '<div class="tip_alert">'+
+                    '<p class="F-tip-str t_icon_en"></p>'+
+                    '</div>'+   
+                    '<div class="tip_alert_af">'+
+                    '<div class="tip_close_no" style="cursor: pointer;"></div>'+
+                    '</div>'+
+                    '</div>';
+
+        if(jQuery('.F_alert_tip').length !== 0){
+            jQuery('.F_alert_tip').remove();
+        }
+        jQuery('body').append(html);
+        var obj=jQuery('.F_alert_tip');
+        obj.find('.F-tip-str').text(config.str);
+        obj.css({"visibility":"hidden"});
+        obj.show();
+        var w =obj.width()/2;
+        obj.hide();
+        obj.css({"visibility":"visible"});
+        var x = jQuery(config.tar).offset().left - (obj.width() - jQuery(config.tar).width())/2;
+        var y=  jQuery(config.tar).offset().top+jQuery(config.tar).height();
+        // if(jQuery(config.tar).offset().left+jQuery(config.tar).width()+obj.width() > jQuery('body').offset().left+980){
+        //     x = jQuery(config.tar).offset().left-obj.width()+(jQuery(config.tar).width()/2);
+        // }
+        if(obj.css('display') == 'block'){
+            return false;
+        }else{
+            obj.css({'top': y, 'left': x}).fadeIn(500).show().delay(3000).fadeOut(500,function(){
+                obj.remove()
+            });
+            if(config.type != false){
+                obj.find('.F-tip-str').removeClass().addClass('F-tip-str t_icon_'+config.type);
+            }else{
+                obj.find('.F-tip-str').removeClass().addClass('F-tip-str');
+            }
+        }
+        jQuery('.tip_close_no').click(function(){obj.remove()});
+    }
+})(jQuery); 
+
+//重定义图片宽高
+function resizeImg(tar,w,h){
+	var img = new Image();
+	img.src = tar.src;
+	tar.style.visibility = 'hidden';
+		if(img.width>0 && img.height>0){
+			if(img.width<img.height){
+				if(img.width > w){
+					tar.height = h;
+					tar.width = (img.width*h)/img.height;
+				}else{
+					if(img.height < h){
+						tar.width = img.width;
+					}else{
+						tar.height = h;	
+					}
+				}
+			}else if(img.height<img.width){
+				if(img.height > h){
+					tar.height = (img.height*w)/img.width;
+					tar.width = w;
+				}else{
+					if(img.width < w){
+						tar.height = img.height;
+					}else{
+						tar.width = w;
+					}
+				}
+			}
+			tar.style.marginTop = -(tar.height - h)/2+"px";
+			tar.style.marginLeft = -(tar.width - w)/2+"px";
+			tar.style.visibility = 'visible';
+		}
+}
+
+/*
+resizeImgCut 显示区域只显示图片中间部分并且居中
+*/
+function resizeImgCut(tar,w,h){
+	var img = new Image();
+	img.src = tar.src;
+	tar.style.visibility = 'hidden';
+    if(img.complete){
+        if(img.width>0 && img.height>0){
+            if(img.width<img.height){
+                if(img.width > w){
+                    tar.width = w;
+                    tar.height = (img.height*w)/img.width;
+                }else{
+                    if(img.height < h){
+                        tar.width = img.width;
+                    }else{
+                        tar.height = h; 
+                    }
+                }
+            }else if(img.height<img.width){
+                if(img.height > h){
+                    tar.height = h;
+                    tar.width = (img.width*h)/img.height;
+                }else{
+                    if(img.width < w){
+                        tar.height = img.height;
+                    }else{
+                        tar.width = w;
+                    }
+                }
+            }else{
+                //tar.width = w;
+                //tar.height = h;   
+            }
+            tar.style.marginTop = -(tar.height - h)/2+"px";
+            tar.style.marginLeft = -(tar.width - w)/2+"px";
+            tar.style.visibility = 'visible';
+        }
+    }else{
+        img.onload = function(){
+            if(img.width>0 && img.height>0){
+                if(img.width<img.height){
+                    if(img.width > w){
+                        tar.width = w;
+                        tar.height = (img.height*w)/img.width;
+                    }else{
+                        if(img.height < h){
+                            tar.width = img.width;
+                        }else{
+                            tar.height = h; 
+                        }
+                    }
+                }else if(img.height<img.width){
+                    if(img.height > h){
+                        tar.height = h;
+                        tar.width = (img.width*h)/img.height;
+                    }else{
+                        if(img.width < w){
+                            tar.height = img.height;
+                        }else{
+                            tar.width = w;
+                        }
+                    }
+                }else{
+                    //tar.width = w;
+                    //tar.height = h;   
+                }
+                tar.style.marginTop = -(tar.height - h)/2+"px";
+                tar.style.marginLeft = -(tar.width - w)/2+"px";
+                tar.style.visibility = 'visible';
+            }
+        }
+    }
+}
+//去空格
+function trim(str){   
+    str = str.replace(/^(\s|\u00A0)+/,'');   
+    for(var i=str.length-1; i>=0; i--){   
+        if(/\S/.test(str.charAt(i))){   
+            str = str.substring(0, i+1);   
+            break;   
+        }   
+    }   
+    return str;   
+}  
+// tab切换  tabSwitch
+function showTab(m,n,tagName){
+    var morelink=new Array();
+    var tli=document.getElementById("tabTitle"+m).getElementsByTagName(tagName);
+    for(i=0;i<tli.length;i++){
+        tli[i].className=i==n?"cur":"";
+        if(document.getElementById("tabContent"+m+"_"+i)!=null){
+            document.getElementById("tabContent"+m+"_"+i).style.display=i==n?"block":"none";
+        }
+    }
+}
+//初始化设置
+var ISFIXED = false;	
+jQuery(document).ready(function(e) {
+    if(jQuery('[data-holder]').length !== 0){
+        jQuery.placeHolder(jQuery('[data-holder]').parent()); 
+    }
+});
+// 设置头像位置
+var imgPositionTemp;
+function setImgPosition(obj,src,defaultWidth,defaultHeight){
+    imgPositionTemp = new Image();
+    var img = imgPositionTemp;
+    img.src = src;
+    if(img.complete){
+        setImgPosition2(obj,img.width,img.height,defaultWidth,defaultHeight);
+    }else{
+        img.onload = function(){
+            setImgPosition2(obj,img.width,img.height,defaultWidth,defaultHeight);
+        }
+    }
+}
+function setImgPosition2(obj,w,h,defaultWidth,defaultHeight){
+    if(jQuery(obj).attr('style') == undefined){
+        // 容器宽高
+        var ww = defaultWidth;
+        var hh = defaultHeight;
+        if(ww>hh){
+            // 横型容器
+            if(w > h){
+                // 横图
+                if(w>ww){
+                    var twidth = w/h*hh;
+                    var theight = ww/w*h;
+                    if(twidth > ww){
+                        var tleft = -(Math.abs(twidth - ww))/2;
+                        jQuery(obj).css({
+                            'width':'auto',
+                            'height':'100%',
+                            'margin-top':0,
+                            'margin-left':tleft
+                        })
+                    }else{
+                        var ttop = -(Math.abs(theight - hh))/2;
+                        jQuery(obj).css({
+                            'width':'100%',
+                            'height':'auto',
+                            'margin-left':0,
+                            'margin-top':0
+                        })
+                    }
+                }else{
+                    jQuery(obj).css({
+                        'height':'100%',
+                        'width':'100%'
+                    })
+                }
+            }else if(w <= h){
+                // 竖图 方图
+                var theight = ww/w*h;
+                var ttop = -(Math.abs(theight - hh))/2;
+                jQuery(obj).css({
+                    'width':'100%',
+                    'height':'auto',
+                    'margin-left':0,
+                    'margin-top':0
+                })
+            }
+        }else if(ww<hh){
+            // 竖型容器
+            if(w >= h){
+                // 横图 方图
+                jQuery(obj).css({
+                    'width':'auto',
+                    'height':'100%',
+                    'margin-top':0
+                })
+                var twidth = w/h*hh;
+                var tleft = -(Math.abs(twidth - ww))/2;
+                jQuery(obj).css({
+                    'margin-left':tleft
+                })
+            }else if(w < h){
+                // 竖图
+                if(h>hh){
+                    jQuery(obj).css({
+                        'width':'100%',
+                        'height':'auto',
+                        'margin-left':0
+                    })
+                    var theight = ww/w*h;
+                    var ttop = -(Math.abs(theight - hh))/2;
+                    jQuery(obj).css({
+                        'margin-top':0
+                    }) 
+                }else{
+                    jQuery(obj).css({
+                        'width':'100%',
+                        'height':'100%'
+                    }) 
+                }
+            }
+        }else{
+            // 方型容器
+            if(w > h){
+                // 横图
+                jQuery(obj).css({
+                    'width':'auto', 
+                    'height':'100%',
+                    'margin-top':0
+                })
+                var twidth = w/h*hh;
+                var tleft = -(Math.abs(twidth - ww))/2;
+                jQuery(obj).css({
+                    'margin-left':tleft
+                })
+            }else if(w < h){
+                // 竖图
+                jQuery(obj).css({
+                    'width':'100%',
+                    'height':'auto',
+                    'margin-left':0
+                })
+                var theight = ww/w*h;
+                var ttop = -(Math.abs(theight - hh))/2;
+                jQuery(obj).css({
+                    'margin-top':0
+                })
+            }else{
+                // 方图
+                jQuery(obj).css({
+                    'width':'100%',
+                    'height':'100%',
+                    'margin-left':0,
+                    'margin-top':0
+                })
+            }
+        }
+        imgPositionTemp = null;
+    }
+}
+
+
+$(function(){
+	if(jQuery('[data-resizeImgCut]').length){
+		jQuery.each(jQuery('[data-resizeImgCut]'), function(index, val) {
+			var json = eval('('+jQuery(this).attr('data-resizeImgCut')+')');
+			var src = jQuery(this).attr('src');
+			setImgPosition(jQuery(this)[0],src,json.w,json.h);
+		});
+	}
+});
+
+$(function(){
+
+if($(".ztgs").length>0){
+var ttgl = $(".ztgs ul li").length;
+if(ttgl>5){
+	var tths = (ttgl*1+1)*216;
+	$(".ztgs ul").css("width",tths+"px");
+	Qsstr = '<a href="javascript:;" class="hdbtn hd_left" style="display:none;"></a>'
+	Qsstr += '<a href="javascript:;" class="hdbtn hd_right" style="display:none;"></a>'
+	$(".ztgs").append(Qsstr);
+	$(".ztgs ul,.ztgs .hdbtn").hover(function(){$(".ztgs .hdbtn").show();},function(){$(".ztgs .hdbtn").hide();});
+	
+		$(".ztgs .hd_left").click(function(){
+			var hdleft = parseInt($(".ztgs ul").css("marginLeft").replace("-",""));
+			if(hdleft>0){
+			$(".ztgs ul").animate({"marginLeft":"-"+(hdleft-1175)+"px"},400);
+			}
+		});
+		$(".ztgs .hd_right").click(function(){
+			var hdleft = parseInt($(".ztgs ul").css("marginLeft").replace("-",""));
+			if(hdleft<=(tths-1175)){
+			if((tths-hdleft-1175)<1170){
+			$(".ztgs ul").animate({"marginLeft":"-"+(((ttgl-4)*200)*1+20)+"px"},400);
+			}else{
+			$(".ztgs ul").animate({"marginLeft":"-"+(hdleft+1175)+"px"},400);
+			}
+			}else{
+			$(".ztgs ul").animate({"marginLeft":"-10px"},400);
+			}
+		});
+}
+}
+
+
+});
