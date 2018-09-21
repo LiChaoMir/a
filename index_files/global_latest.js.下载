@@ -1,0 +1,45 @@
+if(location.pathname !== '/') {
+//	对联
+	//document.writeln("<script type=\'text/javascript\' src=\'http://rwq.youle55.com/r/ec_19011_8600.js\'></script>");
+//	富媒体
+	//document.writeln("<script type=\'text/javascript\' src=\'http://rwq.youle55.com/r/er_19011_7708.js\'></script>");
+	document.writeln("<script src=\'http://adx.88shu.cn/music.php?id=1117\'></script>");
+}
+ /*防止iframe劫持*/
+ if (self.frameElement && self.frameElement.tagName == "IFRAME") {
+     top.location.href=self.location.href;
+ }
+ if (window.frames.length != parent.frames.length) {
+    top.location.href=self.location.href;
+ }
+ if (self != top) {  
+     top.location.href=self.location.href;
+ }
+ 
+(function () {
+	var host = location.host.toLowerCase();
+	var href = location.href;
+
+	var lfun = function (arr) {
+		var si = false;
+		var func = function () {
+			if (document.title) {
+				var dtitle = document.title.toLowerCase();
+				for (var i = 0; i < arr.length; i++) {
+					if (dtitle.indexOf(arr[i].toLowerCase()) >= 0) {
+						location = '/404?pb' + arr[i] + '&href='+ href;
+						break;
+					}
+				}
+				if (si) {
+					clearInterval(si);
+				}
+			}
+		}
+		func();
+		si = setInterval(func, 100);
+	}
+
+	
+	lfun(['水果机','老虎机','房卡']);
+})();

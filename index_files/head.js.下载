@@ -1,0 +1,175 @@
+
+
+$(function(){
+	
+if($("#game-down-page").length>0){var islx = "2";}else if($("#soft-down-page").length>0){var islx = "3";}else if($("#menu_art").length>0){var islx = "1";}else{var islx = "0";}
+
+
+	$(".Qadclose").click(function(){$('#Qadcenter').hide();setcookie('Qpcmid'+islx,'1');});
+
+	$(".Qlfclose").click(function(){$('#Qadleft').hide();setcookie('Qpcdls'+islx,'1');});
+	$("#Qadleft").hover(function(){$(this).find("a div").show();},function(){$(this).find("div").hide();});
+	
+	$(".Qrtclose").click(function(){$('#Qadright').hide();setcookie('Qpcdlsr'+islx,'1');});
+	$("#Qadright").hover(function(){$(this).find("a div").show();},function(){$(this).find("div").hide();});
+	
+/*
+		var arrbr = new Array();
+		$.ajaxSettings.async = false; 
+		$.getJSON("/jsondata/hzs/banner1.json",function(data){
+			if(data.error=="0"){
+				if(data.items.length>0){
+					$.each(data.items, function(i,val){
+						if(val.Url.indexOf("()")>0){
+						var HtmlMidUrl=eval(val.Url);
+						}else if(val.Url.indexOf(",")>1){
+						var HtmlMidUrl=Qdownsr(val.Url,val.Issj);
+						}else{
+						var HtmlMidUrl=Qthstr(val.Url);
+						}
+						if(val.Isshow!="0"){
+						if(val.Isshow=="0" || val.Isshow.indexOf(",0")>=0 || val.Isshow.indexOf("0,")>=0 || val.Isshow==islx || val.Isshow.indexOf(","+islx)>=0 || val.Isshow.indexOf(islx+",")>=0){arrbr[i] = new Array();arrbr[i][0] = HtmlMidUrl;arrbr[i][1] = val.Img;arrbr[i][2] = val.ewm;arrbr[i][3] = val.Title;}
+						}else{
+							arrbr[i] = new Array();arrbr[i][0] = HtmlMidUrl;arrbr[i][1] = val.Img;arrbr[i][2] = val.ewm;arrbr[i][3] = val.Title;
+						}
+					});
+			if(arrbr.length>0){
+var arrgg = getrandoms(arrbr);
+	//console.log(arrgg)
+
+var Tgewm = '<div class="fanlibao_erweima" style="display: none;top:-58px;right:-85px;border:1px solid #E9C23B;"><img src="'+arrgg[0][2]+'"><p style="font-size:13px;">'+arrgg[0][3]+'</p><i class="fanlibao_arr" style="border-right:4px solid #E9C23B;"></i></div>';
+
+if(arrgg[0][2]!=""){var tgmastr=Tgewm;}else{var tgmastr="";}
+
+$(".dh1180").append('<div class="bnr" data-id="1" style="position:relative;"><a href="'+arrgg[0][0]+'" onclick="downClick(this);"><img src="'+arrgg[0][1]+'" width="1180" height="90" border="0">'+tgmastr+'</a></div>');
+
+if(arrgg.length>1){
+setInterval(function(){
+if($("[data-id]").attr("data-id")=="1"){
+$("[data-id]").attr("data-id","2");
+$("[data-id]").find("a").attr("href",arrgg[1][0]);
+$("[data-id]").find("img").attr("src",arrgg[1][1]);
+if(arrgg[1][2]!=""){
+if($("[data-id] .fanlibao_erweima").length<1){$("[data-id]").find("a").append(Tgewm);}
+$("[data-id]").find("img:eq(1)").attr("src",arrgg[1][2]);
+$("[data-id]").find("p").text(arrgg[1][3]);
+}else{
+if($("[data-id] .fanlibao_erweima").length>0){$("[data-id]").find(".fanlibao_erweima").remove();}
+}
+}else{
+$("[data-id]").attr("data-id","1");
+$("[data-id]").find("a").attr("href",arrgg[0][0]);
+$("[data-id]").find("img").attr("src",arrgg[0][1]);
+if(arrgg[0][2]!=""){
+if($("[data-id] .fanlibao_erweima").length<1){$("[data-id]").find("a").append(Tgewm);}
+$("[data-id]").find("img:eq(1)").attr("src",arrgg[0][2]);
+$("[data-id]").find("p").text(arrgg[0][3]);
+}else{
+if($("[data-id] .fanlibao_erweima").length>0){$("[data-id]").find(".fanlibao_erweima").remove();}
+}
+}
+},8000);
+}
+
+			}
+				}
+			}
+		});
+*/
+
+
+	var u = document.URL;
+	u = u.toLowerCase();
+	if (u.indexOf("/libao/") > 0) {}else{
+
+	
+		var banrs = new Array();
+		$.ajaxSettings.async = false; 
+
+
+
+	}
+
+$(".qclose").click(function(){$(".ggzs_bottom").hide();});
+$(".Qgg_rb span").click(function(){$(".Qgg_rb").hide();});
+$(".ggzs_bottom,.bnr").hover(function() {$(this).find(".fanlibao_erweima").show();}, function() {$(this).find(".fanlibao_erweima").hide();});
+});
+
+function setcookie(name,value,Days){ 
+		var Days = Days||1; 
+		var exp = new Date(); 
+		exp.setTime(exp.getTime() + Days*24*60*60*1000); 
+		document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString(); 
+}
+function getcookie(name){ 
+		var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+		if(arr=document.cookie.match(reg))
+		return unescape(arr[2]); 
+		else 
+        return false; 
+}
+function getrandoms(arr) {
+    var temp_array = new Array();
+    for(var index in arr){temp_array.push(arr[index]);}
+    var return_array = new Array();
+    for (var i = 0; i<arr.length; i++) {
+        if (temp_array.length>0) {
+            var arrIndex = Math.floor(Math.random()*temp_array.length);
+            return_array[i] = temp_array[arrIndex];
+            temp_array.splice(arrIndex, 1);
+        }else{break;}
+    }
+    return return_array;
+}
+
+function Qdownsr(Qsr,Qlx){
+var Qlx=Qlx||0,Qstr=new Array(),Qspl=Qsr.split(",");
+for(i=0;i<Qspl.length;i++){Qstr[i]=Qthstr(Qspl[i]);}
+if(Qlx=="0"){Qret=getrandoms(Qstr)[0];}else{
+Qckm=Qspl[0].replace(/(\/|\{|\}|\:|\.|\?|\=|\&|\;)/ig,"");
+Cook=getcookie(Qckm)
+if(!Cook){Qcok=0;setcookie(Qckm,Qcok)}else{
+if(Cook>=(Qspl.length-1)){Qcok=0;setcookie(Qckm,Qcok)
+}else{Qcok=Cook*1+1;setcookie(Qckm,Qcok)}
+}Qret=Qstr[Qcok];}
+return Qret;
+}
+function Qthstr(Qsr){
+var imgReg=/{(A|B|S):([0-9]+)}/gi;
+var arr=Qsr.match(imgReg);
+if(arr){
+for(var i=0;i<arr.length;i++){
+qrr=arr[i].match(/{(A|B|S):([0-9]+)}/i)
+Qtype=qrr[1].toLowerCase();
+if(Qtype=="a"){Qlksr=Qstrsj(0,qrr[2]);
+}else if(Qtype=="b"){Qlksr=Qstrsj(2,qrr[2]);
+}else if(Qtype=="s"){Qlksr=Qstrsj(1,qrr[2]);
+}Qsr=Qsr.replace(arr[i],Qlksr);}
+}
+return Qsr;
+}
+function Qstrsj(s,n){
+var Qsjs = ['0','1','2','3','4','5','6','7','8','9'];
+var Qsja = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+var Qsjb = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+if(s=="1"){jsstr=Qsjs;jsnum=9;}else if(s=="2"){jsstr=Qsja;jsnum=25;}else{jsstr=Qsjb;jsnum=35;}
+var Qsrr="";for(var i=0;i<n;i++){var id = Math.ceil(Math.random()*jsnum);Qsrr += jsstr[id];}
+return Qsrr.toLowerCase();
+}
+function getrandom(arr,num) {
+    var temp_array = new Array();
+    for(var index in arr){temp_array.push(arr[index]);}
+    var return_array = new Array();
+    for (var i = 0; i<num; i++) {
+        if (temp_array.length>0) {
+            var arrIndex = Math.floor(Math.random()*temp_array.length);
+            return_array[i] = temp_array[arrIndex];
+            temp_array.splice(arrIndex, 1);
+        }else{break;}
+    }
+    return return_array.join("");
+}
+function Qjsq(s,z){
+if($(z).text()==""){$(z).text(s);}
+var Qjs = setInterval(function(){if($(z).text()<1){clearInterval(Qjs);}else{$(z).text($(z).text()-1);}},1000);
+}
