@@ -23,7 +23,9 @@
 
 
         <script type="text/javascript">
-           
+            var uaTest = /Android|webOS|iPhone|Windows Phone|ucweb|iPod|BlackBerry|ucbrowser|SymbianOS/i.test(navigator.userAgent.toLowerCase());
+            var touchTest = 'ontouchend' in document;
+            
         </script>
 
 </head>
