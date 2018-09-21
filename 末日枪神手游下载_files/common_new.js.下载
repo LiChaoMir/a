@@ -1,0 +1,2187 @@
+﻿
+//==========Mobile redirect Begin ========
+var browser = {
+    versions: function () {
+        var u = navigator.userAgent,
+        app = navigator.appVersion;
+        return { //移动终端浏览器版本信息
+            trident: u.indexOf('Trident') > -1,
+            //IE内核
+            presto: u.indexOf('Presto') > -1,
+            //opera内核
+            webKit: u.indexOf('AppleWebKit') > -1,
+            //苹果、谷歌内核
+            gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1,
+            //火狐内核
+            mobile: !!u.match(/AppleWebKit.*Mobile/i) || !!u.match(/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/),
+            //是否为移动终端
+            ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/),
+            //ios终端
+            android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1,
+            //android终端或者uc浏览器
+            iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1,
+            //是否为iPhone或者QQHD浏览器
+            iPad: u.indexOf('iPad') > -1,
+            //是否iPad
+            webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
+        };
+        domain
+    }(),
+    language: (navigator.browserLanguage || navigator.language).toLowerCase()
+}
+
+var Cookie = {
+    get: function (name) {
+        var value = '',
+        matchs;
+        if (matchs = document.cookie.match("(?:^| )" + name + "(?:(?:=([^;]*))|;|$)")) value = matchs[1] ? unescape(matchs[1]) : "";
+        return value
+    },
+    set: function (name, value, expire, domain) {
+        expire = expire || 30 * 24 * 3600 * 1000;
+        var date = new Date(),
+        cookie = "";
+        date.setTime(date.getTime() + expire);
+        cookie = name + "=" + escape(value) + ";expires=" + date.toGMTString() + ";path=/;";
+        domain && (cookie += "domain=" + domain + ";");
+        document.cookie = cookie
+    },
+    del: function (name, domain) {
+        Cookie.set(name, '', -1, domain)
+    }
+};
+
+
+
+(function () {
+    var href = location.href,
+    isFormMoblie = /[\?&]m(&|$)/.test(window.location.search),
+    doNotRedirect = +Cookie.get('donotredirect'),
+
+    isMoblie = browser.versions.mobile;
+
+    var Init = {
+        redirect: function () {
+           
+        }
+    }
+
+    if (isFormMoblie) {
+        Cookie.set('donotredirect', 1, 7 * 24 * 3600 * 1000);
+        return;
+    } else if (isMoblie) {
+        if (!doNotRedirect) Init.redirect();
+    }
+    /*
+	if($(".s-info a[href='/Kaice/weifaxing.html']").length){
+		$("body").html('<iframe src="/404/404.html" width="100%" height="'+$(window).height()+'" align="center,center" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" style="border:0;margin:0;" allowtransparency="true"></iframe>')
+	}
+	*/
+})()
+//==========Mobile redirect End ========
+
+addMap = window.addMap || {};
+
+function ViaJs(id) { var _f = undefined; var _fconv = 'addMap[\"' + id + '\"]'; try { _f = eval(_fconv); if (_f != undefined) { _f() } } catch (e) { } }
+
+function Qggloads(Qoi, sty, sht, Qlx) {
+    var sty = sty || "";
+    var sht = sht || 0;
+    var Qlx = Qlx || 0;
+    document.write("<div id=Q_" + Qoi + " style='display:none;" + sty + "'>"); ViaJs(Qoi); document.write("</div>");
+    $(function () {
+        if (Qlx == 0) {
+            $("#Q_" + Qoi).insertAfter("#" + Qoi).show();
+        } else {
+            $("#Q_" + Qoi).insertBefore("#" + Qoi).show();
+        }
+        if (sht == 0) { $("#" + Qoi).hide(); }
+    });
+}
+
+function initIndexPage() {
+    listBoxToggle(); gotoTop();
+}
+function softDownPage() {
+    hidetext("hidebox"); init_downpage_tabs();
+    var Platform = getPlatform($('#c_soft_down').attr('data-os'));
+    downContTit(Platform); createExDownUrl(Platform); d_goTop();
+    if ($('.edit').html().length <= 22) { $('.edit').hide(); }
+    if ($('#v-os')) {
+        var pf = getPlatformExt();
+        var osHtml = '';
+        var pfUrl = '';
+        if ($('#v-os').attr("data-url")) {
+            pfUrl = $('#v-os').attr("data-url");
+        }
+        if (pf == 1) {
+            if (pfUrl) {
+                osHtml = '<a class="android turnDownUrl" title="安卓版下载"></a><a href="' + pfUrl + '" target="_blank" class="ios" title="苹果版下载"></a>';
+            } else {
+                osHtml = '<a class="android turnDownUrl" title="安卓版下载"></a><a class="nIos" title="苹果版下载"></a>';
+            }
+        }
+        if (pf == 2) {
+            if (pfUrl) {
+                osHtml = '<a class="ios turnDownUrl" title="苹果版下载"></a></a><a href="' + pfUrl + '" target="_blank" class="android" title="安卓版下载"></a>';
+            } else {
+                osHtml = '<a class="ios turnDownUrl" title="苹果版下载"></a><a class="nAndroid" title="安卓版下载"></a>';
+            }
+
+        }
+        if (pf == 3) {
+            if (pfUrl) {
+                if (Platform == 1) {
+                    osHtml = '<a class="android turnDownUrl" title="安卓版下载"></a><a href="' + pfUrl + '" target="_blank"  class="ios" title="苹果版下载"></a>';
+                } else if (Platform == 2) {
+                    osHtml = '<a href="' + pfUrl + '" target="_blank" class="android" title="°2×?°?????"></a><a class="ios turnDownUrl" title="苹果版下载"></a>';
+                } else {
+                    osHtml = '<a class="android turnDownUrl" title="安卓版下载"></a><a class="ios turnDownUrl" title="苹果版下载"></a>';
+                }
+            } else {
+                osHtml = '<a class="android turnDownUrl" title="安卓版下载"></a><a class="ios turnDownUrl" title="苹果版下载"></a>';
+            }
+        }
+        $('#v-os').append(osHtml);
+        $('.turnDownUrl').click(function () {
+            $('html,body').animate({ scrollTop: $('#addressWrap').offset().top - 60 }, 140);
+        });
+    }
+
+    if ($(".navigation li").length > 0) {
+        var Qdqfl = $("#c_soft_down").attr("data-os");
+        $(".navigation li a").removeClass("cur");
+        $(".navigation li a").each(function () {
+            if ($(this).text() == "安卓版") {
+                if (Qdqfl == "Android") { $(this).css("background", "#239963"); }
+            }
+            if ($(this).text() == "苹果版") {
+                if (Qdqfl == "Ios") { $(this).css("background", "#239963"); }
+            }
+            if ($(this).text() == "软件下载") {
+                $(this).addClass("cur");
+            }
+        });
+    }
+
+    if ($(".lh-wrapper .nav-rec-main").length > 0) {
+        var Qdqfl = $("#c_soft_down").attr("data-os");
+        $(".lh-wrapper .nav-rec-main li").removeClass("cur");
+        $(".lh-wrapper .nav-rec-main li").each(function () {
+            var ltxts = $(this).find("a span.nav-main-list").text()
+            if (ltxts == "安卓版") {
+                if (Qdqfl == "Android") { $(this).addClass("cur"); }
+            }
+            if (ltxts == "苹果版") {
+                if (Qdqfl == "Ios") { $(this).addClass("cur"); }
+            }
+            if (ltxts == "软件下载") {
+                $(this).addClass("cur");
+            }
+        });
+    }
+
+    //if($("#mtab li:last").text()=="网友点评"){$("#mtab li:last").remove();}
+
+    Qrightmunu();
+    isnewshd("#giftWrap");
+    artimglist(".artimglists,.artimgnlist");
+
+    if ($("#newshd").length > 0) { $("#mtab li:last").prev().before('<li style="display:none;">手游活动</li>'); }
+
+    if ($("#cmtNum").length > 0) {
+        if ($("#cmtNum").text() != 0) {
+            $("#mtab li:last").append('<i>(' + $("#cmtNum").text() + ')</i>');
+        }
+    }
+
+    if ($("#giftWrap").length > 0 && $("#giftWrap .oTit h2").length < 2) {
+        if ($("#giftCont").find("li").length > 0) {
+            if ($("#giftTab").length > 0) { $("#giftTab").remove(); }
+            $("#giftWraptj").remove();
+            for (var i = 0; i < $("#giftCont li").length; i++) {
+                if ($("#giftCont li").eq(i).find("span").eq(1).text() == "0") {
+                    $("#giftCont li").eq(i).find(".btn").css({ "backgroundColor": "#ccc" });
+                }
+            }
+        } else {
+            if ($("#giftTab").length > 0) { $("#giftTab").remove(); }
+            $("#giftWrap").remove();
+            for (var i = 0; i < $("#giftConttj li").length; i++) {
+                if ($("#giftConttj li").eq(i).find("span").eq(1).text() == "0") {
+                    $("#giftConttj li").eq(i).find(".btn").css({ "backgroundColor": "#ccc" }).html("淘一淘");
+                }
+            }
+        }
+    }
+
+    if ($("[data-kftime]").length > 0) {
+        $("[data-kftime]").each(function () {
+            if (isday($(this).attr("data-kftime"))) {
+                $(this).find("i").html("今日");
+                $(this).css("color", "red");
+                //$(this).find("div.cir").removeClass("tc").addClass("tb");
+                //$(this).find("span.newg1").removeClass("newg1").addClass("newg2");
+            } else {
+                if ($(this).find("[color]").length > 0) { $(this).find("[color]").attr("color", "") }
+            }
+        });
+    }
+
+}
+
+function toptab(c) {
+    $('#test_' + c + '>li').mouseover(function () {
+        $(this).siblings().removeClass('last').end().addClass('last');
+        var i = $(this).index() + 1;
+        $('.' + c).addClass('hide');
+        $('.' + c + '_' + i).removeClass('hide');
+    });
+}
+
+function listBoxToggle() {
+    $(".box-toggle").each(function () {
+        var obj = $(this);
+        obj.find("dd").eq(0).addClass("f");
+    });
+    $(".box-toggle").find("dd").mouseenter(function () {
+        $(this).children(".info-toggle").stop(true, true).fadeIn(400).css("display", "block").end()
+			.children(".t-toggle").css("display", "none").end()
+			.siblings().children(".info-toggle").css("display", "none").end()
+			.children(".t-toggle").css("display", "block");
+    });
+}
+
+$(function () {
+    toptab('tab');
+    if ($("#noxzmobile").length > 0) {
+       
+    }
+
+    if ($("#authorRate").length > 0) {
+        $.getJSON("/ajax_author.asp?a=g&author=" + $("#authorRate").attr("date-author"), function (result) {
+            $("#authorRate").text(result.rate);
+        });
+    }
+
+    $(".qclose").click(function () { $(".ggzs_bottom").hide(); });
+    if ($("#cnxh").length > 0) {
+        var DataArray = $("#cnxh").attr("data-array");
+        if (DataArray) {
+            var DataJson = eval('(' + DataArray + ')');
+
+            var tmplView = document.getElementById('SpecialTabItemList-tmpl').innerHTML;
+            var listView = $("#SpecialTab");
+            var tmpl = tmplView;
+            var doTtmpl = doT.template(tmpl);
+            listView.empty();
+            listView.append(doTtmpl(DataJson));
+
+            tmplView = document.getElementById('SpecialItemList-tmpl').innerHTML;
+            listView = $("#cnxh");
+            tmpl = tmplView;
+            doTtmpl = doT.template(tmpl);
+            listView.empty();
+            listView.append(doTtmpl(DataJson));
+
+            $("#cnxh").removeAttr("data-array");
+        }
+    }
+
+    if ($('#c_soft_down').attr('data-test')) {
+        var sTestValue = $('#c_soft_down').attr('data-test');
+        var sTestHtml = '';
+        if ($('#game-down-page').length > 0) {
+            sTestHtml = sTestHtml + '本游戏：';
+        } else if ($('#soft-down-page').length > 0) {
+            sTestHtml = sTestHtml + '本软件：';
+        }
+        if (sTestValue.indexOf('官方版') >= 0) {
+            sTestHtml = sTestHtml + '<span>官方版</span>';
+        }
+        if (sTestValue.indexOf('安全') >= 0) {
+            sTestHtml = sTestHtml + '<span>安全</span>';
+        }
+        if (sTestValue.indexOf('无广告') >= 0) {
+            sTestHtml = sTestHtml + '<span>无广告</span>';
+        }
+        if (sTestValue.indexOf('无需网络') >= 0) {
+            sTestHtml = sTestHtml + '<span>无需网络</span>';
+        } else {
+            sTestHtml = sTestHtml + '<span class="network_act">需网络</span>';
+        }
+        sTestHtml = '<li class="property">' + sTestHtml + '</li>';
+        $('.edit').after(sTestHtml);
+    }
+
+    if ($('#c_soft_down').attr('data-recom')) {
+        var sRecom = $('#c_soft_down').attr('data-recom');
+        if (sRecom == "1") {
+            $('.s-head-l h1').append('<a title="小编推荐" class="recommend"></a>');
+        }
+    }
+    if ($('#c_soft_down').attr('data-tq')) {
+        var sTq = $('#c_soft_down').attr('data-tq');
+        if (sTq == "1") {
+            $('.s-head-l h1').append('<a title="查看软件特权" class="privilege"></a>');
+            $('.s-head-l .privilege').click(function () {
+                $("html,body").animate({ scrollTop: $('#priviWrap').offset().top - 60 }, 400);
+            });
+        }
+    }
+    if ($('#c_soft_down').attr('data-zturl')) {
+        var sZt = $('#c_soft_down').attr('data-zt');
+        var sztUrl = $('#c_soft_down').attr('data-zturl');
+        var sztTit = $('#c_soft_down').attr('data-zttit');
+        if (sZt == "1") {
+            $('.s-head-l h1').append('<a href=' + sztUrl + ' class="special" target="_blank" title=进入' + sztTit + '专区></a>');
+            $(".packageDetail h2.title").append('<a href=' + sztUrl + ' class="special" target="_blank" title=进入' + sztTit + '专区></a>');
+            if ($("[data-zthd]").length > 0) {
+                var zthdurl = $("[data-zthd]").attr("data-zthd");
+                if (zthdurl != "") {
+                    var datahdcs = '';
+                    var datahdtl = '进入' + sztTit + '活动专区';
+                    Qckm = location.href.replace(/(\/|\{|\}|\:|\.|\?|\=|\&|\;|\_)/ig, "");
+                    if ($("[data-hdcs]").length > 0 && Cookie.get("HD" + Qckm) != "1") {
+                        var zthdcs = $("[data-hdcs]").attr("data-hdcs");
+                        if (zthdcs != "") { var datahdcs = '<i>' + zthdcs + '</i>'; }
+                        if (zthdurl != "") { var datahdtl = sztTit + '有' + zthdcs + '个最新活动进行中'; }
+                    }
+                    $(".packageDetail h2.title").append('<a href=' + zthdurl + ' class="huodong" target="_blank" title="' + datahdtl + '">活动' + datahdcs + '</a>');
+                    $(".packageDetail h2.title .huodong").click(function () {
+                        Cookie.set("HD" + Qckm, "1"); if ($(this).find("i").length > 0) { $(this).find("i").remove(); }
+                    });
+                }
+            }
+        }
+    }
+
+
+    if ($('#c_soft_down').attr('data-ping')) {
+        var iqping = $('#c_soft_down').attr('data-ping');
+        if ($("[data-appname]").length > 0) {
+            var Appname = $('#c_soft_down').attr('data-appname');
+        } else { var Appname = ""; }
+        if (iqping != "") {
+            $('.s-head-l h1').append('<a href="javascript:;" id="pingck" class="ping" title="' + Appname + ' 评测"></a>');
+            if ($("#pinghrml").length > 0) {
+                if ($("#pinghrml .imgs img").attr("src") != "" || $("#pinghrml .pingce").text().length > 10) { $("#pinghrml").show(); }
+            }
+            $('#pingck').click(function () {
+                if ($("#hidetexttips").length > 0) { showtext('hidebox'); }
+                $("html,body").animate({ scrollTop: $('#pinghrml').offset().top - 65 }, 400);
+            });
+        } else { if ($("#pinghrml").length > 0) { $("#pinghrml").remove(); } }
+    } else { if ($("#pinghrml").length > 0) { $("#pinghrml").remove(); } }
+    addSign();
+
+    $('.tabNav li').mouseover(function () {
+        $(this).addClass('cur').siblings().removeClass('cur');
+        $(this).parent().siblings('.sContent').find('.tab_content').hide();
+        $(this).parent().siblings('.sContent').find('.tab_content').eq($(this).index()).show();
+    });
+    $('.tab_nav_s li').mouseover(function () {
+        $(this).addClass('cur').siblings().removeClass('cur');
+        $(this).parent().siblings('.tab_content_s').hide();
+        $(this).parent().siblings('.tab_content_s').eq($(this).index()).show();
+    });
+
+    $('.c_soft_same dt span').mouseover(function () {
+        $(this).addClass('cur').siblings().removeClass('cur');
+        $(this).parent().siblings('ul').hide().eq($(this).index()).show();
+    });
+
+    $('.tab1 span').mouseover(function () {
+        $(this).addClass('cur').siblings().removeClass('cur');
+        $(this).parent().siblings('dd').hide().eq($(this).index()).show();
+    });
+
+    $('.downCont li').hover(function () {
+        $(this).find('.downText').hide();
+        $(this).find('.downTextBtn').show();
+    }, function () {
+        $(this).find('.downText').show();
+        $(this).find('.downTextBtn').hide();
+    });
+
+    $('.s-item').hover(function () {
+        $(this).children('.s-item-title').hide();
+        $(this).children('.s-item-control').fadeIn();
+    }, function () {
+        $(this).children('.s-item-title').show();
+        $(this).children('.s-item-control').fadeOut();
+    });
+
+    $('#SpecialTab b').mouseover(function () {
+        $(this).addClass('cur').siblings().removeClass('cur');
+        $('#cnxh').find('.guess').hide().eq($(this).index()).show();
+    });
+
+    $('.maindown').click(function () {
+        var h = $('#addressWrap').offset().top;
+        $('html,body').animate({ scrollTop: h - 60 }, 400);
+    });
+
+    $('#nav li').hover(function () {
+        $(this).children('div').stop(true, false).slideDown();
+        $(this).addClass('on');
+    }, function () {
+        $(this).children('div').stop(true, false).slideUp();
+        $(this).removeClass('on');
+    });
+
+
+    $('.i_QRcode .i_img').hover(function () {
+        $('.d_QRcode').show();
+        $('.d_QRcode').stop(true, false).animate({ 'top': 0, 'opacity': 1 }, 300, 'swing', function () { });
+    }, function () {
+        $('.d_QRcode').stop(true, false).animate({ 'top': -30, 'opacity': 0 }, 300, 'linear', function () { $('.d_QRcode').hide(); });
+    });
+
+    if ($("#giftsList").length > 0) {
+        if ($("#giftsList").html().length <= 84) {
+            $("#giftsList").hide();
+        }
+    }
+
+    if ($("[data-m]").length > 0) {
+        if ($("[data-m]").attr("data-m") == "yyb") {
+            $('.s-head-l h1').append('<a class="courseBtn">特权福利<span></span></a>');
+            $('.s-head-l .courseBtn').click(function () {
+                //$("html,body").animate({scrollTop:$('#Qfltq').offset().top-75},400);
+                $("#hidebox h3.biaoti").each(function () {
+                    if ($(this).text().indexOf("福利特权说明") > 0 || $(this).text().substring(0, 6) == "福利特权说明") {
+                        $("html,body").animate({ scrollTop: $('#hidebox h3.biaoti:eq(' + $("#hidebox h3").index(this) + ')').offset().top - 70 }, 400);
+                    }
+                });
+
+            });
+            var pcDown = '<div class="downCont" id="Qfltq"><a href="/rjtq/" class="pcDown" target="_blank">福利特权版下载</a></div>';
+            if ($('#SoftDownListEx-view').length > 0) {
+                $('#SoftDownListEx-view').after(pcDown);
+            } else {
+                $('.ul_Address').after(pcDown);
+            }
+            if ($(".s-head-l h1 .privilege").length > 0) { $(".s-head-l h1 .privilege").remove(); }
+        }
+        if ($("[data-m]").attr("data-m") == "360") {
+            $('.s-head-l h1').append('<a class="courseBtn">特权福利<span></span></a>');
+            $('.s-head-l .courseBtn').click(function () {
+                //$("html,body").animate({scrollTop:$('#Qfltq').offset().top-75},400);
+                $("#hidebox h3.biaoti").each(function () {
+                    if ($(this).text().indexOf("福利特权说明") > 0 || $(this).text().substring(0, 6) == "福利特权说明") {
+                        $("html,body").animate({ scrollTop: $('#hidebox h3.biaoti:eq(' + $("#hidebox h3").index(this) + ')').offset().top - 70 }, 400);
+                    }
+                });
+            });
+            var pcDown = '<div class="downCont" id="Qfltq"><a href="/tq360/" class="pcDown" target="_blank">福利特权版下载</a></div>';
+            if ($('#SoftDownListEx-view').length > 0) {
+                $('#SoftDownListEx-view').after(pcDown);
+            } else {
+                $('.ul_Address').after(pcDown);
+            }
+            if ($(".s-head-l h1 .privilege").length > 0) { $(".s-head-l h1 .privilege").remove(); }
+        }
+        if ($("[data-m]").attr("data-m") == "skq") {
+            $('.s-head-l h1').append('<a class="courseBtn" href="/skjc/" target="_blank">双开教程<span></span></a>');
+        }
+        if ($("[data-m]").attr("data-m") == "guopan") {
+            $('.s-head-l h1').append('<a class="courseBtn" href="/guopan/" target="_blank">破解教程<span></span></a>');
+        }
+        if ($("[data-m]").attr("data-m") == "fofz") {
+            $('.s-head-l h1').append('<a class="courseBtn" href="/fofz/" target="_blank">辅助教程<span></span></a>');
+            $(".ul_Address li a").click(function () {
+                var sSurl = $(this).attr("href");
+               
+            });
+        }
+    }
+
+    /*
+        var PCtext = '电脑版下载';
+        var PCurls = 'http://h5jv8.hz5l.hz155.com/down/diannaoban.exe';
+        if($("[data-addtxt]").length>0&&$("[data-addurl]").length>0){
+            var addtxt = $("[data-addtxt]").attr("data-addtxt");
+            var addurl = $("[data-addurl]").attr("data-addurl");
+            if(addtxt!=""){PCtext = addtxt;}
+            if(addurl!=""){PCurls = addurl;}
+        }
+        
+        var pcDown = '<div class="downCont"><a href="'+PCurls+'" onclick="downClick(this);" class="pcDown">'+PCtext+'</a></div>';
+        if($('#SoftDownListEx-view').length>0){
+            $('#SoftDownListEx-view').after(pcDown);
+        }else{
+            $('.ul_Address').after(pcDown);
+        }
+    */
+    /*
+    if($('#game-down-page').length>0){
+        var PCtext = $("[data-appname]").attr("data-appname")+'电脑版下载';
+        var PCurls = 'http://res.ldmnq.com/download/ldhelper/ldmarket_1.0.8.300.exe';
+        var pcDown = '<div class="downCont"><a href="'+PCurls+'" onclick="downClick(this);" class="pcDown">'+PCtext+'</a></div>';
+        if($('#SoftDownListEx-view').length>0){
+            $('#SoftDownListEx-view').after(pcDown);
+        }else{
+            $('.ul_Address').after(pcDown);
+        }
+    }
+    */
+    getFocusWrap();
+
+    $("#hidebox .tag").after("<a name='zh_ios'></a>");
+
+
+
+
+
+    if ($(".zt_list li span").eq(0).has("font").length > 0) {
+
+    } else {
+      
+    }
+
+
+
+
+    $('.mrd_pic ul li,.main1 ul li').hover(function () {
+        $(this).find(".mrd_bt").hide();
+        $(this).addClass('hover');
+    }, function () {
+        $(this).find(".mrd_bt").show();
+        $(this).removeClass('hover');
+    });
+
+    if ($(".head-nav").length <= 0 && $(".soso").length <= 0) {
+        $(".s_system_i").remove();
+        $(".s_system_a").remove();
+    }
+
+    $("#noxzmobile,#noxzewm").hover(function () { $("#noxzewm").show(); }, function () { $("#noxzewm").hide(); });
+
+
+    $("#otherarticleWrap .articlelist dt").each(function () {
+        var thibt = $(this).html(); rebt = /\[共(\d+)篇\]/i; resr = rebt.exec(thibt);
+        if (resr) { hfhl = thibt.replace(/\[共(\d+)篇\]/i, "<i>" + resr[1] + "篇</i>"); $(this).html(hfhl); }
+    })
+
+    if ($("#giftWrap").length > 0) {
+        if ($("#giftWrap ul").length > 1) {
+            if ($("#giftTab").length > 0) { $("#giftTab").remove(); }
+            if ($("#giftWrap .oTit a").length > 0) {
+                if ($("[data-lbs]").length > 0) {
+                    var lbdatas = $("[data-lbs]").attr("data-lbs");
+                } else { var lbdatas = ""; }
+                if (lbdatas.indexOf("{") >= 0) lbdatas = "";
+                var morelblk = '<a href="' + $("#giftWrap .oTit a").attr("href") + '" class="more pt25" target="_blank">礼包专区' + lbdatas + '&gt;&gt;</a>';
+                $("#giftWrap .oTit a").remove();
+                $("#giftWrap .oTit").append(morelblk);
+            } else {
+                var morelblk = '';
+            }
+            var morelbls = '<a href="/libao/" class="more pt25" target="_blank">更多&gt;&gt;</a>';
+            if ($("#giftWrap ul:eq(0) li").length > 0) {
+                $("#giftWrap .oTit h2:eq(0)").hover(function () {
+                    $("#giftWrap ul:eq(0)").show(); $("#giftWrap ul:eq(1)").hide();
+                    $("#giftWrap .oTit h2:eq(0)").removeClass("cur"); $("#giftWrap .oTit h2:eq(1)").addClass("cur");
+                    $("#giftWrap .oTit a").remove();
+                    $("#giftWrap .oTit").append(morelblk);
+                });
+                $("#giftWrap .oTit h2:eq(1)").hover(function () {
+                    $("#giftWrap ul:eq(0)").hide(); $("#giftWrap ul:eq(1)").show();
+                    $("#giftWrap .oTit h2:eq(1)").removeClass("cur"); $("#giftWrap .oTit h2:eq(0)").addClass("cur");
+                    $("#giftWrap .oTit a").remove();
+                    $("#giftWrap .oTit").append(morelbls);
+                });
+            } else {
+                $("#giftWrap ul:eq(0)").remove();
+                $("#giftWrap .oTit a").remove();
+                $("#giftWrap .oTit").append(morelbls);
+                //$("#giftWrap .oTit a").hide();
+                $("#giftWrap .oTit h2:eq(0)").hide();
+                $("#giftWrap .oTit h2").removeClass("cur");
+                $("#giftWrap ul").show();
+            }
+            for (var i = 0; i < $("#giftWrap li").length; i++) {
+                if ($("#giftWrap li").eq(i).find("span").eq(1).text() == "0") {
+                    $("#giftWrap li").eq(i).find(".btn").css({ "backgroundColor": "#ccc" }).html("淘一淘");
+                }
+            }
+        }
+    }
+
+});
+
+
+
+function Qrightmunu() {
+    $(".sidelist:last").removeClass("sidelist").addClass("sidelists");
+
+    if ($('.gotoBtn').length > 0) {
+        if ($('#game-down-page').length > 0) { srights = '游戏'; } else if ($('#soft-down-page').length > 0) { srights = '软件'; }
+        var qrights = '<div class="side-catalog" style="display:none;"><div class="side-bar"><em class="circle start"></em><em class="circle end"></em></div><div class="catalog-scroller"><dl class="catalog-list"><dt class="catalog-title level1"><em class="pointer"></em><span class="text"><a href="javascript:void(0);" class="title-link a_rjjs" Qtpye="0">' + srights + '介绍</a></span></dt><dt class="catalog-title level1" id="Qijs"><em class="pointer"></em><span class="text"><a href="javascript:void(0);" class="title-link a_rjtq" Qtpye="0">软件特权</a></span></dt><dt class="catalog-title level1"><em class="pointer"></em><span class="text"><a href="javascript:void(0);" class="title-link a_rjjt" Qtpye="0">' + srights + '截图</a></span></dt><dt class="catalog-title level1"><em class="pointer"></em><span class="text"><a href="javascript:void(0);" class="title-link a_spys" Qtpye="0">视频演示</a></span></dt><dt class="catalog-title level1"><em class="pointer"></em><span class="text"><a href="javascript:void(0);" class="title-link a_cnxh" Qtpye="0">猜你喜欢</a></span></dt><dt class="catalog-title level1" id="Qixh"><em class="pointer"></em><span class="text"><a href="javascript:void(0);" class="title-link a_down" Qtpye="0">下载地址</a></span></dt><dt class="catalog-title level1" id="Qixz"><em class="pointer"></em><span class="text"><a href="javascript:void(0);" class="title-link a_xgwz" Qtpye="0">相关文章</a></span></dt><dt class="catalog-title level1" id="Qixg"><em class="pointer"></em><span class="text"><a href="javascript:void(0);" class="title-link a_wydp" Qtpye="0">网友点评</a></span></dt><dt class="catalog-title level1"><em class="pointer"></em><span class="top-link"><a href="javascript:void(0);" class="a_top" Qtpye="0">返回顶部</a></span></dt><a class="arrow" href="javascript:void(0);" style="top:6px;"></a></dl></div></div>';
+        $(".gotoBtn").after(qrights);
+
+
+        if ($('#VideoIntrocontent embed').length > 0) {
+        } else {
+            $('.a_spys').remove(); var iqs = $(".side-bar").height(); $(".side-bar").css("height", (iqs - 31) + "px");
+        }
+        if (($('#giftCont').length > 0) && ($('#giftCont').html().length > 0)) {
+            var iqs = $(".side-bar").height(); $(".side-bar").css("height", (iqs + 31) + "px");
+        } else {
+            $('.a_yxlb').remove();
+        }
+        if (($('#priviWrap').length > 0) && ($('.priviCont').html().length > 200)) {
+            var iqs = $(".side-bar").height(); $(".side-bar").css("height", (iqs + 31) + "px");
+        } else {
+            $('.a_rjtq').remove();
+        }
+
+
+        $(".title-link").click(function () {
+            $(".arrow").animate({ top: $(".title-link").index(this) * 31 + 6 + "px" });
+        });
+
+
+        var iqi = 620;
+        var iqs = $(".side-bar").height();
+        if ($('#hidebox h3').length > 0) {
+            $("#hidebox h3").each(function () {
+                aaa = $(this).html();
+                bbb = $("#hidebox h3").index(this);
+                if ((aaa.indexOf("功能") > 0 || aaa.substring(0, 2) == "功能") && (aaa.indexOf("简介") > 0 || aaa.substring(0, 2) == "简介")) {
+                    Qijshtml("功能简介", bbb); iqi = iqi + 20; iqs = iqs + 31;
+                } else if ((aaa.indexOf("更新") > 0 || aaa.substring(0, 2) == "更新") && (aaa.indexOf("日志") > 0 || aaa.substring(0, 2) == "日志")) {
+                    Qijshtml("更新日志", bbb); iqi = iqi + 20; iqs = iqs + 31;
+                } else if ((aaa.indexOf("安装") > 0 || aaa.substring(0, 2) == "安装") && (aaa.indexOf("说明") > 0 || aaa.substring(0, 2) == "说明")) {
+                    Qijshtml("安装说明", bbb); iqi = iqi + 20; iqs = iqs + 31;
+                } else if ((aaa.indexOf("破解") > 0 || aaa.substring(0, 2) == "破解") && (aaa.indexOf("说明") > 0 || aaa.substring(0, 2) == "说明")) {
+                    Qijshtml("破解说明", bbb); iqi = iqi + 20; iqs = iqs + 31;
+                } else if ((aaa.indexOf("付费") > 0 || aaa.substring(0, 2) == "付费") && (aaa.indexOf("说明") > 0 || aaa.substring(0, 2) == "说明")) {
+                    Qijshtml("付费说明", bbb); iqi = iqi + 20; iqs = iqs + 31;
+                } else if (aaa.indexOf("游戏特色") > 0 || aaa.substring(0, 4) == "游戏特色") {
+                    Qijshtml("游戏特色", bbb); iqi = iqi + 20; iqs = iqs + 31;
+                } else if (aaa.indexOf("软件特色") > 0 || aaa.substring(0, 4) == "软件特色") {
+                    Qijshtml("软件特色", bbb); iqi = iqi + 20; iqs = iqs + 31;
+                } else if (aaa.indexOf("安装教程") > 0 || aaa.substring(0, 4) == "安装教程") {
+                    Qijshtml("安装教程", bbb); iqi = iqi + 20; iqs = iqs + 31;
+                } else if (aaa.indexOf("教程") > 0 || aaa.substring(0, 2) == "教程") {
+                    Qijshtml("教程", bbb); iqi = iqi + 20; iqs = iqs + 31;
+                } else if (aaa.indexOf("背景") > 0 || aaa.substring(0, 2) == "背景") {
+                    Qijshtml("背景介绍", bbb); iqi = iqi + 20; iqs = iqs + 31;
+                } else if (aaa.indexOf("修改说明") > 0 || aaa.substring(0, 4) == "修改说明") {
+                    Qijshtml("修改说明", bbb); iqi = iqi + 20; iqs = iqs + 31;
+                } else if (aaa.indexOf("使用说明") > 0 || aaa.substring(0, 4) == "使用说明") {
+                    Qijshtml("使用说明", bbb); iqi = iqi + 20; iqs = iqs + 31;
+                } else if (aaa.indexOf("数据包") > 0 || aaa.substring(0, 3) == "数据包") {
+                    Qijshtml("数据包使用", bbb); iqi = iqi + 20; iqs = iqs + 31;
+                } else if (aaa.indexOf("温馨提示") > 0 || aaa.substring(0, 4) == "温馨提示") {
+                    Qijshtml("温馨提示", bbb); iqi = iqi + 20; iqs = iqs + 31;
+                } else if (aaa.indexOf("友情提示") > 0 || aaa.substring(0, 4) == "友情提示") {
+                    Qijshtml("友情提示", bbb); iqi = iqi + 20; iqs = iqs + 31;
+                } else if (aaa.indexOf("更新") > 0 || aaa.substring(0, 2) == "更新") {
+                    Qijshtml("更新", bbb); iqi = iqi + 20; iqs = iqs + 31;
+                } else if (aaa.indexOf("特色") > 0 || aaa.substring(0, 2) == "特色") {
+                    Qijshtml("特色", bbb); iqi = iqi + 20; iqs = iqs + 31;
+                } else if (aaa.indexOf("功能") > 0 || aaa.substring(0, 2) == "功能") {
+                    Qijshtml("功能", bbb); iqi = iqi + 20; iqs = iqs + 31;
+                } else if (aaa.indexOf("简介") > 0 || aaa.substring(0, 2) == "简介") {
+                    Qijshtml("简介", bbb); iqi = iqi + 20; iqs = iqs + 31;
+                } else if (aaa.indexOf("日志") > 0 || aaa.substring(0, 2) == "日志") {
+                    Qijshtml("日志", bbb); iqi = iqi + 20; iqs = iqs + 31;
+                } else if (aaa.indexOf("特点") > 0 || aaa.substring(0, 2) == "特点") {
+                    Qijshtml("特点", bbb); iqi = iqi + 20; iqs = iqs + 31;
+                } else if (aaa.indexOf("攻略") > 0 || aaa.substring(0, 2) == "攻略") {
+                    Qijshtml("攻略", bbb); iqi = iqi + 20; iqs = iqs + 31;
+                } else if (aaa.indexOf("玩法") > 0 || aaa.substring(0, 2) == "玩法") {
+                    Qijshtml("玩法", bbb); iqi = iqi + 20; iqs = iqs + 31;
+                } else if (aaa.indexOf("游戏评测") > 0 || aaa.substring(0, 4) == "游戏评测") {
+                    Qijshtml("游戏评测", bbb); iqi = iqi + 20; iqs = iqs + 31;
+                } else if (aaa.indexOf("软件评测") > 0 || aaa.substring(0, 4) == "软件评测") {
+                    Qijshtml("软件评测", bbb); iqi = iqi + 20; iqs = iqs + 31;
+                } else { }
+                //alert(bbb)
+
+            });
+            //alert(iqi+"|"+iqs)
+        } else {
+            $('.ej').remove();//$(".side-bar").css("height","280px");
+        }
+
+        if ($('#SpecialTab b').length > 0) {
+
+            $("#SpecialTab b").each(function () {
+                aaa = $(this).html();
+                bbb = $("#SpecialTab b").index(this);
+                Qixhhtml(aaa, bbb); iqi = iqi + 20; iqs = iqs + 31;
+            });
+        }
+
+        if ($('#otherarticleWrap dt').length > 0) {
+
+
+            $("#otherarticleWrap dt").each(function () {
+                aaa = $(this).text();
+                bbb = $("#otherarticleWrap dt").index(this);
+                //aaa = aaa.substr(aaa.length-4)
+                if (aaa.indexOf("游戏资讯") >= 0) {
+                    aaa = "游戏资讯";
+                } else if (aaa.indexOf("攻略心得") >= 0) {
+                    aaa = "攻略心得";
+                } else if (aaa.indexOf("游戏问答") >= 0) {
+                    aaa = "游戏问答";
+                } else if (aaa.indexOf("软件资讯") >= 0) {
+                    aaa = "软件资讯";
+                } else if (aaa.indexOf("软件教程") >= 0) {
+                    aaa = "软件教程";
+                } else {
+                    aaa = aaa.replace("更多>", "");
+                }
+                Qixghtml(aaa, bbb); iqi = iqi + 20; iqs = iqs + 31;
+            });
+        }
+
+        if ($('.downCont .ios').length > 0) {
+            Qixzhtml("苹果下载", 1); iqi = iqi + 20; iqs = iqs + 31;
+        }
+        if ($('.downCont .android').length > 0) {
+            Qixzhtml("安卓下载", 2); iqi = iqi + 20; iqs = iqs + 31;
+        }
+
+        if ($('#tequanlist').length > 0) {
+            if ($('#tequanlist').find("ul").find("li").length > 0) {
+                $("#Qixz").before('<dt class="catalog-title level1"><i id="a_teqn"></i><em class="pointer"></em><span class="text"><a href="javascript:void(0);" class="title-link a_teqn" Qtpye="0">推荐特权</a></span></dt>');
+                $("#downTab").after('<li>推荐特权</li>');
+                iqi = iqi + 20; iqs = iqs + 31;
+            }
+        }
+
+
+        if ($('#giftWrap #giftCont').find("li").length > 0) {
+            $("#Qixz").before('<dt class="catalog-title level1"><em class="pointer"></em><span class="text"><a href="javascript:void(0);" class="title-link a_yxlb" Qtpye="0">游戏礼包</a></span></dt>');
+            if ($("[data-lbs]").length > 0) {
+                var lbmun = "<i>" + $("[data-lbs]").attr("data-lbs") + "</i>";
+                if ($("#mtab li:eq(1)").text() == "游戏截图") { $("#mtab li:eq(1)").html("游戏截图<i>(" + $(".snapShotCont li").length + ")</i>") }
+            } else { var lbmun = ""; }
+            $("#downTab").after('<li class="a_yxlb">游戏礼包' + lbmun + '</li>');
+            iqi = iqi + 20; iqs = iqs + 31;
+        } else {
+            if ($('#giftConttj').length > 0) {
+                if ($('#giftConttj').find("li").length > 0) {
+                    $("#Qixz").before('<dt class="catalog-title level1"><em class="pointer"></em><span class="text"><a href="javascript:void(0);" class="title-link a_tjlb" Qtpye="0">推荐礼包</a></span></dt>');
+                    $("#downTab").after('<li class="a_tjlb">推荐礼包</li>');
+                    iqi = iqi + 20; iqs = iqs + 31;
+                }
+            }
+        }
+
+
+        $(".side-bar").css("height", iqs + "px");
+        $(".side-catalog").css("bottom", iqi + "px");
+
+    }
+
+    $(window).scroll(function () {
+        var s = $(window).scrollTop(); if (s > 1600) { $(".side-catalog").show(); } else { $(".side-catalog").hide(); };
+    });
+    $('#goTop,.a_top').click(function () { $(".level2 span").removeClass("qlcur"); $('html,body').animate({ scrollTop: 0 }, 700); });
+    $('.a_rjjs').click(function () { $(".level2 span").removeClass("qlcur"); $('html,body').animate({ scrollTop: $('#introWrap').offset().top - 10 }, 700); });
+    $('.a_rjtq').click(function () { $(".level2 span").removeClass("qlcur"); $('html,body').animate({ scrollTop: $('#priviWrap').offset().top - 30 }, 700); });
+    $('.a_rjjt').click(function () { $(".level2 span").removeClass("qlcur"); $('html,body').animate({ scrollTop: $('#imgpreviewWrap').offset().top - 30 }, 700); });
+    $('.a_spys').click(function () { $(".level2 span").removeClass("qlcur"); $('html,body').animate({ scrollTop: $('#VideoIntroWrap').offset().top - 30 }, 700); });
+    $('.a_cnxh').click(function () { $(".level2 span").removeClass("qlcur"); $('html,body').animate({ scrollTop: $('#guessWrap').offset().top - 30 }, 700); });
+    $('.a_down').click(function () { $(".level2 span").removeClass("qlcur"); $('html,body').animate({ scrollTop: $('#addressWrap').offset().top - 30 }, 700); });
+    $('.a_teqn').click(function () { $(".level2 span").removeClass("qlcur"); $('html,body').animate({ scrollTop: $('#tequanlist').offset().top - 30 }, 700); });
+    $('.a_yxlb').click(function () { $(".level2 span").removeClass("qlcur"); $('html,body').animate({ scrollTop: $('#giftCont').offset().top - 30 }, 700); });
+    $('.a_tjlb').click(function () { $(".level2 span").removeClass("qlcur"); $('html,body').animate({ scrollTop: $('#giftConttj').offset().top - 30 }, 700); });
+    $('.a_xgwz').click(function () { $(".level2 span").removeClass("qlcur"); $('html,body').animate({ scrollTop: $('#otherarticleWrap').offset().top - 30 }, 700); });
+    $('.a_wydp').click(function () { $(".level2 span").removeClass("qlcur"); $('html,body').animate({ scrollTop: $('#commentWrap').offset().top - 30 }, 700); });
+
+
+
+    $(".catalog-title a").each(function () {
+        bbb = $(".catalog-title a").index(this);
+        $(this).attr("Qtpye", bbb);
+    });
+
+    $('[id="Qcurs"]').click(function () {
+        $(".level2 span").removeClass("qlcur");
+        $(this).parent().addClass("qlcur");
+    });
+
+
+
+    var mtabScrollTop = $('#mtab').offset().top;
+    $(window).scroll(function () {
+        var winScroll = $(window).scrollTop();
+        var wrapTop = new Array();
+        for (var i = 0; i <= $('#mtab li').length - 1; i++) {
+            (function () {
+                wrapTop[i] = $('#mtab').siblings().eq(i).offset().top - 50;
+                if (winScroll > wrapTop[i]) {
+
+                    var tabstrs = $("#mtab li:eq(" + i + ")").text();
+
+                    if (tabstrs == "下载总览") { var issi = $("dl .a_rjjs").attr("Qtpye"); $(".arrow").css("top", issi * 31 + 6 + "px"); }
+                    if (tabstrs == "软件特权") { var issi = $("dl .a_rjtq").attr("Qtpye"); $(".arrow").css("top", issi * 31 + 6 + "px"); }
+                    if (tabstrs == "游戏截图" || tabstrs == "软件截图") { var issi = $(".a_rjjt").attr("Qtpye"); $(".arrow").css("top", issi * 31 + 6 + "px"); }
+                    if (tabstrs == "视频演示") { var issi = $("dl .a_spys").attr("Qtpye"); $(".arrow").css("top", issi * 31 + 6 + "px"); }
+                    if (tabstrs == "猜你喜欢") { var issi = $("dl .a_cnxh").attr("Qtpye"); $(".arrow").css("top", issi * 31 + 6 + "px"); }
+                    if (tabstrs == "下载地址") { var issi = $("dl .a_down").attr("Qtpye"); $(".arrow").css("top", issi * 31 + 6 + "px"); }
+                    if (tabstrs == "推荐特权") { var issi = $("dl .a_teqn").attr("Qtpye"); $(".arrow").css("top", issi * 31 + 6 + "px"); }
+                    if (tabstrs == "游戏礼包") { var issi = $("dl .a_yxlb").attr("Qtpye"); $(".arrow").css("top", issi * 31 + 6 + "px"); }
+                    if (tabstrs == "推荐礼包") { var issi = $("dl .a_tjlb").attr("Qtpye"); $(".arrow").css("top", issi * 31 + 6 + "px"); }
+                    if (tabstrs == "相关文章") { var issi = $("dl .a_xgwz").attr("Qtpye"); $(".arrow").css("top", issi * 31 + 6 + "px"); }
+                    if (tabstrs == "网友点评") { var issi = $("dl .a_wydp").attr("Qtpye"); $(".arrow").css("top", issi * 31 + 6 + "px"); }
+
+
+
+                }
+            })();
+        }
+    });
+
+
+
+
+    $('#mtab li').click(function () {
+        var i = $(this).index();
+        var _cont = $(this).parent().siblings().eq(i);
+        $("html,body").animate({ scrollTop: _cont.offset().top - 70 }, 400);
+        if (i == $('#mtab li').length - 1) {
+            $(this).addClass('cur').siblings().removeClass('cur');
+        }
+    });
+
+}
+
+
+
+function Qijshtml(str, ii) {
+    $("#Qijs").before('<dd class="catalog-title level2"><span class="text"><a href="javascript:tztz(' + ii + ');" class="title-link qnum" Qtpye="' + ii + '" id="Qcurs">' + str + '</a></span></dd>');
+}
+function Qixhhtml(str, ii) {
+    $("#Qixh").before('<dd class="catalog-title level2"><span class="text"><a href="javascript:tzxh(' + ii + ');" class="title-link qxh" Qtpye="' + ii + '" id="Qcurs">' + str + '</a></span></dd>');
+}
+function Qixghtml(str, ii) {
+    $("#Qixg").before('<dd class="catalog-title level2"><span class="text"><a href="javascript:tzxg(' + ii + ');" class="title-link qxh" Qtpye="' + ii + '" id="Qcurs">' + str + '</a></span></dd>');
+}
+function Qixzhtml(str, ii, ss) {
+    $("#Qixz").before('<dd class="catalog-title level2"><span class="text"><a href="javascript:tzxz(' + ii + ');" class="title-link qxh" Qtpye="' + ii + '" id="Qcurs">' + str + '</a></span></dd>');
+}
+
+function tztz(ii) {
+    if ($("#hidetexttips").length > 0) { showtext('hidebox'); }
+    $('html,body').animate({ scrollTop: $('#hidebox h3:eq(' + ii + ')').offset().top - 35 }, 700);
+}
+function tzxh(ii) {
+    var qqjs = $(".qnum").length;
+    $('html,body').animate({ scrollTop: $('#guessWrap').offset().top - 70 }, 140);
+    $('#SpecialTab b').eq(ii).addClass('cur').siblings().removeClass('cur');
+    $("#cnxh .guess").hide().eq(ii).show();
+}
+function tzxg(ii) {
+    $('html,body').animate({ scrollTop: $('#otherarticleWrap dt:eq(' + ii + ')').offset().top - 40 }, 700);
+}
+function tzxz(ii) {
+    if (ii == 1) { var ss = "ios" } else { var ss = "android" }
+    $('html,body').animate({ scrollTop: $('.downCont .' + ss + '').offset().top - 40 }, 700);
+}
+
+function downClick(el) {
+    var sSrc = '';
+    if ($(el).attr("src")) {
+        if ($(el).attr("src").length > 0) {
+            sSrc = '&src=' + $(el).attr("src");
+        }
+    }
+  
+}
+
+function downContTit(Platform) {
+    if (Platform === 1) {
+        $('.downCont .p1').addClass('android');
+        $('.downCont .p1').text('安卓下载');
+    } else if (Platform === 2) {
+        $('.downCont .p1').addClass('ios');
+        $('.downCont .p1').html('苹果下载');
+        //$('.downCont .p1').html('苹果下载<a id="ioszh" style="cursor: pointer;">IOS账号获取</a>');
+    }
+    if ($(".downCont .ios").length > 0) { if ($('[data-platform="2"]').length < 1) { $(".downCont .ios").remove(); } }
+    if ($(".downCont .android").length > 0) { if ($('[data-platform="1"]').length < 1) { $(".downCont .android").remove(); } }
+}
+
+function gotoTop() {
+    $(".gotoBox i").click(
+		function () { $('html,body').animate({ scrollTop: 0 }, 700); }
+	);
+    $(window).scroll(function () {
+        var s = $(window).scrollTop();
+        if (s > 800) {
+            $(".gotoBox i").css("visibility", "visible");
+        } else {
+            $(".gotoBox i").css("visibility", "hidden");
+        };
+        if (s > 800 && s < 1800) {
+            $('.gotoBox a').removeClass('cur').eq(0).addClass('cur');
+        } else if (s > 1800 && s < 2500) {
+            $('.gotoBox a').removeClass('cur').eq(1).addClass('cur');
+        } else if (s > 2500 && s < 3252) {
+            $('.gotoBox a').removeClass('cur').eq(2).addClass('cur');
+        } else if (s > 3252 && s < 4000) {
+            $('.gotoBox a').removeClass('cur').eq(3).addClass('cur');
+        } else if (s > 4000 && s < 5250) {
+            $('.gotoBox a').removeClass('cur').eq(4).addClass('cur');
+        } else if (s > 5250) {
+            $('.gotoBox a').removeClass('cur').eq(5).addClass('cur');
+        }
+    });
+    $("#azsoft_tab").click(function () { $("html,body").animate({ scrollTop: $("#azsoft").offset().top }, 800); });
+    $("#azgame_tab").click(function () { $("html,body").animate({ scrollTop: $("#azgame").offset().top }, 800); });
+    $("#pgsoft_tab").click(function () { $("html,body").animate({ scrollTop: $("#pgsoft").offset().top }, 800); });
+    $("#pggame_tab").click(function () { $("html,body").animate({ scrollTop: $("#pggame").offset().top }, 800); });
+    $("#hotgame_tab").click(function () { $("html,body").animate({ scrollTop: $("#hotgame").offset().top }, 800); });
+    $("#yxj_tab").click(function () { $("html,body").animate({ scrollTop: $("#hotyxj").offset().top }, 800); });
+}
+
+function addSign() {
+    $(".sign_app").each(function () {
+        var signValue = $(this).attr("data-sign");
+        switch (signValue) {
+            case "破解版":
+                $(this).before("<i class='sign sign_1'></i>"); break;
+            case "汉化版":
+                $(this).before("<i class='sign sign_2'></i>"); break;
+            case "首发":
+                $(this).before("<i class='sign sign_3'></i>"); break;
+            case "已付费":
+                $(this).before("<i class='sign sign_4'></i>"); break;
+            case "中文版":
+                $(this).before("<i class='sign sign_5'></i>"); break;
+            case "存档版":
+                $(this).before("<i class='sign sign_6'></i>"); break;
+            case "修改版":
+                $(this).before("<i class='sign sign_7'></i>"); break;
+            case "内购版":
+                $(this).before("<i class='sign sign_8'></i>"); break;
+            case "钻石版":
+                $(this).before("<i class='sign sign_9'></i>"); break;
+            case "金币版":
+                $(this).before("<i class='sign sign_10'></i>"); break;
+            case "精品版":
+                $(this).before("<i class='sign sign_11'></i>"); break;
+            case "越狱版":
+                $(this).before("<i class='sign sign_12'></i>"); break;
+            case "官方版":
+                $(this).before("<i class='sign sign_13'></i>"); break;
+            case "官网版":
+                $(this).before("<i class='sign sign_14'></i>"); break;
+            case "ipad":
+                $(this).before("<i class='sign sign_15'></i>"); break;
+            default:;
+        }
+    });
+}
+
+function hidetext(id) {
+    if (jQuery("#" + id).height() > 510) {
+        var p = "<div id='hidetexttips' style='text-align:left;width:100%;margin:10px auto;height:37px;width:110px;'><a href='javascript:void(0)' style='display:block;font-weight:bold;color:#fff;height:37px;width:110px;background:url(/images/c_show3.png) no-repeat left top;text-indent:30px;line-height:27px;' onmouseover=\"this.style.color='#333';\" onmouseout=\"this.style.color='#fff';\" onclick=\"showtext('" + id + "')\">查看全部</a></div>";
+        jQuery("#" + id).css({ "height": "510px", "overflow": "hidden" });
+        jQuery("#showtexttips").remove();
+        jQuery("#" + id).parent().append(p);
+    }
+}
+function showtext(id) {
+    jQuery("#" + id).css({ "height": "auto", "overflow": "inherit" });
+    jQuery("#hidetexttips").remove();
+    var p = "<div id='showtexttips' style='text-align:left;width:100%;margin:10px auto;height:35px;width:180px;'><a href='#introtop' style='display:block;float:left;font-weight:bold;color:#fff;height:35px;width:86px;background:url(/images/c_hide3.png) no-repeat left top;text-indent:20px;line-height:25px;' onmouseover=\"this.style.color='#333';\" onmouseout=\"this.style.color='#fff';\" onclick=\"hidetext('" + id + "')\">收起信息</a> <a href='#introtop' style='display:block;float:left;margin-left:8px;font-weight:bold;color:#FF8000;height:35px;width:86px;background:url(/images/c_dtop3.png) no-repeat left top;text-indent:20px;line-height:25px;' onmouseover=\"this.style.color='#333';\" onmouseout=\"this.style.color='#FF8000';\">返回顶部</a></div>";
+    jQuery("#" + id).parent().append(p);
+
+}
+
+function Qpbcall(scity, call) {
+    var IsTrue = function () {
+        var ref = document.referrer;
+        ref = ref.toLowerCase();
+        var sostr = new Array('google.', 'baidu.', 'soso.', 'so.', '360.', 'yahoo.', 'youdao.', 'sogou.', 'gougou.', 'sm.', 'yisou.', 'bing.');
+        var isso = false;
+        for (ii in sostr) {
+            if (ref.indexOf(sostr[ii]) > 0) { isso = true; break; }
+        }
+        return isso;
+    };
+    if (IsTrue()) {
+        $.getScript('//int.dpool.sina.com.cn/iplookup/iplookup.php?format=js', function () {
+            try { sing = remote_ip_info['province']; city = remote_ip_info['city']; } catch (e) { sing = ''; city = ''; }
+            if (sing != scity || city != scity) { call(); }
+        });
+    }
+}
+
+(function ($) {
+    $.fn.easyTooltip = function (options) {
+
+        // default configuration properties
+        var defaults = {
+            xOffset: 10,
+            yOffset: 25,
+            tooltipId: "easyTooltip",
+            clickRemove: false,
+            content: "",
+            useElement: ""
+        };
+
+        var options = $.extend(defaults, options);
+        var content;
+
+        this.each(function () {
+            var title = $(this).attr("title");
+            $(this).hover(function (e) {
+                content = (options.content != "") ? options.content : title;
+                content = (options.useElement != "") ? $("#" + options.useElement).html() : content;
+                $(this).attr("title", "");
+                if (content != "" && content != undefined) {
+                    $("body").append("<div id='" + options.tooltipId + "'>" + content + "</div>");
+                    var leftOrRight = "left";
+                    var tooltip_x_pos = document.body.clientWidth - e.pageX;
+                    if (tooltip_x_pos < 600) { leftOrRight = "right"; } else { tooltip_x_pos = e.pageX; }
+                    $("#" + options.tooltipId)
+						.css("position", "absolute")
+						.css("top", (e.pageY - options.yOffset) + "px")
+						.css(leftOrRight, tooltip_x_pos + options.xOffset + "px")
+						.css("display", "none")
+						.fadeIn("fast")
+                }
+            },
+			function () {
+			    $("#" + options.tooltipId).remove();
+			    $(this).attr("title", title);
+			});
+            $(this).mousemove(function (e) {
+                var leftOrRight = "left";
+                var tooltip_x_pos = document.body.clientWidth - e.pageX;
+                if (tooltip_x_pos < 600) { leftOrRight = "right"; } else { tooltip_x_pos = e.pageX; }
+                $("#" + options.tooltipId)
+					.css("top", (e.pageY - options.yOffset) + "px")
+					.css(leftOrRight, tooltip_x_pos + options.xOffset + "px")
+            });
+            if (options.clickRemove) {
+                $(this).mousedown(function (e) {
+                    $("#" + options.tooltipId).remove();
+                    $(this).attr("title", title);
+                });
+            }
+        });
+    };
+})(jQuery);
+
+function menuscroll(id) {
+    var obj = $('.' + id);
+    var _getHeight = obj.offset().top;
+    window.onscroll = function () {
+        var scrollTop = $(window).scrollTop();
+        if (scrollTop > _getHeight) {
+            obj.addClass("sNav-fixed");
+        } else {
+            obj.removeClass("sNav-fixed");
+        }
+    }
+}
+
+function init_downpage_tabs() {
+    var bVideo = false, bPriviTab = false, bGift = false;
+    var AppInfo = $('#c_soft_down').attr("data-appinfo");
+    var AppInfoJson = eval('(' + AppInfo + ')');
+    var AppName = AppInfoJson.title;
+    if ($('#VideoIntrocontent').html().length > 0) {
+        $('#VideoIntroWrap').show();
+        $('#mtab #videoTab').show();
+        $('.s-head-l h1').append('<a title="观看' + AppName + '视频演示" class="video"></a>');
+        $('.s-head-l .video').click(function () {
+            $("html,body").animate({ scrollTop: $('#VideoIntroWrap').offset().top - 60 }, 400);
+        });
+        bVideo = true;
+    } else {
+        $('#VideoIntroWrap').remove();
+        $('#mtab #videoTab').remove();
+    }
+
+    if (($('#giftCont').length > 0) && ($('#giftCont').html().length > 0)) {
+        Qckm = location.href.replace(/(\/|\{|\}|\:|\.|\?|\=|\&|\;|\_)/ig, "");
+        $('#giftTab').show();
+        //$('#giftWrap').show();
+        if ($("[data-lbs]").length > 0 && $("[data-appname]").length > 0) {
+            var lbdatas = $("[data-lbs]").attr("data-lbs");
+            lbdatas = lbdatas.replace("(", "").replace(")", "");
+            if (lbdatas != "") {
+                var lbtips = $("[data-appname]").attr("data-appname") + "有" + lbdatas + "个礼包可以领取";
+                if (Cookie.get("LB" + Qckm) != "1") {
+                    var lbmuns = "<i>" + lbdatas + "</i>";
+                } else {
+                    var lbmuns = "";
+                }
+            } else {
+                var lbtips = "领取礼包"; var lbmuns = "";
+            }
+        } else { var lbtips = "领取礼包"; var lbmuns = ""; }
+        $(".s-head-l h1").append("<a title='" + lbtips + "' class='libao'>礼包" + lbmuns + "</a>");
+        $('.s-head-l .libao').click(function () {
+            $("html,body").animate({ scrollTop: $('#giftWrap').offset().top - 115 }, 400);
+            Cookie.set("LB" + Qckm, "1");
+            if ($(this).find("i").length > 0) { $(this).find("i").remove(); }
+        });
+    } else {
+        $('#giftTab').remove();
+        //$('#giftWrap').remove();
+    }
+
+    if (($('#priviWrap').length > 0) && ($('.priviCont').html().length > 200)) {
+        if ($("#c_soft_down").attr("data-tq")) {
+            var v = $("#c_soft_down").attr("data-tq");
+            if (v == '0') {
+                $('#priviWrap').remove();
+                $('#mtab #priviTab').remove();
+                bPriviTab = false;
+            } else {
+                $('#priviWrap').show();
+                $('#mtab #priviTab').show();
+                bPriviTab = true;
+            }
+        } else {
+            $('#priviWrap').remove();
+            $('#mtab #priviTab').remove();
+            bPriviTab = false;
+        }
+    } else {
+        $('#priviWrap').remove();
+        $('#mtab #priviTab').remove();
+    }
+
+    var mtabScrollTop = $('#mtab').offset().top;
+    var tabstr = '';
+    $("#SpecialTab b").each(function () {
+        tabaaa = $(this).html();
+        tabbbb = $("#SpecialTab b").index(this);
+        tabalt = $("#cnxh .guess:eq(" + tabbbb + ") .tztname h3").text();
+        tabalt = tabalt.replace("合集", "");
+        tabstr += '<a href="javascript:tzxh(' + tabbbb + ');" title="' + tabalt + '专题合集">' + tabaaa + '</a>';
+    });
+    $(".main_box").before('<div class="mtabfd" style="display:none;">为您推荐：' + tabstr + '</div>');
+    if ($(".search #keywords").length > 0) { } else { $(".mtabfd").css("width", "856px"); $("#mtab").css("background", "#ffffff") }
+    if ($(".soso").length > 0) { var sosoc = true; } else { var sosoc = false; }
+    $(window).scroll(function () {
+        var winScroll = $(window).scrollTop();
+        var wrapTop = new Array();
+        if (winScroll > mtabScrollTop) {
+            $('#mtab').addClass('sNav-fixed');
+            $('.search').addClass('search-fixed');
+            $('.mtabfd').show();
+            sosoc ? $('.search').removeClass('soso') : "";
+        } else {
+            $('#mtab').removeClass('sNav-fixed');
+            $('.search').removeClass('search-fixed');
+            $('.mtabfd').hide();
+            sosoc ? $('.search').addClass('soso') : "";
+        }
+
+        for (var i = 0; i <= $('#mtab li').length - 1; i++) {
+            (function () {
+                wrapTop[i] = $('#mtab').siblings().eq(i).offset().top - 75;
+                if (winScroll > wrapTop[i]) {
+                    $('#mtab li').removeClass('cur').eq(i).addClass('cur');
+                }
+            })();
+        }
+    });
+    if ($('#special-info').html().length <= 0) {
+        $('#special-box').hide();
+    }
+    /*
+    if($("#c_soft_down[data-appname]").length>0){
+    if($("#c_soft_down").attr("data-appname").indexOf("皇室战争")>=0){
+        $("#c_soft_down .maindown").css("position","relative");
+        $("#c_soft_down .maindown").html('<a href="/yuyue/hszz.html" id="hshover" title="预约皇室战争" target="_blank"><img src="/images/hsyys.jpg" style="border-radius:5px;margin-top:5px;"></a><div id="hstips" style="position:absolute;right:-26px;top:-188px;display:none;"><img src="/images/hs_tip.png"></div>');
+        $("#hshover").hover(function(){$("#hstips").fadeIn(500);},function(){$("#hstips").fadeOut(500);})
+    }
+    }
+    */
+}
+
+
+function isnewshd(thii) {
+    if ($(".breadline a:eq(1)").text().indexOf("游戏") > 0 || $(".breadline a:eq(1)").text().indexOf("开服") > 0 || $(".breadline a:eq(1)").text().indexOf("开测") > 0 || $("#zt_huodong").length > 0) {
+        hddata = "";
+        hdstra = "";
+        hsiss = 0;
+        if ($("[data-appname]").length > 0) { var sappname = $("[data-appname]").attr("data-appname"); } else { var sappname = ""; }
+        $.getJSON("/jsondata/Active/265.json", function (data) {
+            if (data != null) {
+                var datarow = data.items.length;
+                if (datarow > 0) {
+                    data.items = getrandoms(data.items);
+                    for (var i = 0; i < datarow; i++) {
+                        var htime = new Date(data.items[i].etime.replace(/-/, "/"));
+                        htime = htime.getFullYear() + "-" + (htime.getMonth() + 1) + "-" + htime.getDate();
+                        if (sappname == data.items[i].appname && sappname != "") {
+                            hdstra += '<li><a href="' + data.items[i].url + '" title="' + data.items[i].title + '" target="_blank"><div><img src="' + data.items[i].img + '"><i class="top">' + data.items[i].appname + '</i><i hd-data="' + data.items[i].etime + '">结束时间:' + htime + '</i></div><span>' + data.items[i].subtitle + '</span></a></li>'
+                            hsiss++
+                        } else {
+                            hddata += '<li><a href="' + data.items[i].url + '" title="' + data.items[i].title + '" target="_blank"><div><img src="' + data.items[i].img + '"><i class="top">' + data.items[i].appname + '</i><i hd-data="' + data.items[i].etime + '">结束时间:' + htime + '</i></div><span>' + data.items[i].subtitle + '</span></a></li>'
+                        }
+
+                    }
+                    hdstrb = hddata;
+                    //console.log(hdstra)
+                    if (hdstra != "") { var tablisr = '<h2>相关活动</h2><h2 class="cur">其他活动</h2>'; hddata = hdstra; } else { var tablisr = '<h2>推荐活动</h2>'; }
+                    if ($("[data-zthd]").length > 0) {
+                        var zthdmore = $("[data-zthd]").attr("data-zthd");
+                        if (zthdmore != "" && hdstra != "") { var hdmorel = zthdmore; var hdmoret = "活动专区(" + hsiss + ")&gt;&gt;"; } else { var hdmorel = "/syhd/"; var hdmoret = "更多&gt;&gt;"; }
+                    } else { var hdmorel = "/syhd/"; var hdmoret = "更多&gt;&gt;"; }
+                    Qsstr = '<div id="newshd" class="htmltab"><div class="oTit clearfix">'
+                    Qsstr += tablisr + '<a href="' + hdmorel + '" class="more pt25" target="_blank">' + hdmoret + '</a>'
+                    Qsstr += '</div><ul class="artimgnlist clearfix">'
+                    Qsstr += hddata
+                    Qsstr += '</ul><a href="javascript:;" class="hdbtn hd_left" style="display:none;"></a>'
+                    Qsstr += '<a href="javascript:;" class="hdbtn hd_right" style="display:none;"></a></div>'
+                    if (hddata != "") {
+                        if ($("#newshd").length > 0) { $("#newshd").remove(); }
+                        if ($("#gamekf").length > 0) {
+                            $(thii).next().after(Qsstr);
+                        } else {
+                            $(thii).after(Qsstr);
+                        }
+                        var tths = ($("#newshd ul li").length) * 200;
+                        $("#newshd ul").css("width", tths + "px");
+
+                        $("#newshd .artimgnlist,#newshd .hdbtn").hover(function () { if ($("#newshd ul li").length > 4) { $("#newshd .hdbtn").show(); } }, function () { $("#newshd .hdbtn").hide(); })
+
+                        $("#newshd .hd_left").click(function () {
+                            var tths = ($("#newshd ul li").length) * 200;
+                            var hdleft = parseInt($("#newshd .artimgnlist").css("marginLeft").replace("-", ""));
+                            if (hdleft > 0) {
+                                if (hdleft < 800) {
+                                    $("#newshd .artimgnlist").animate({ "marginLeft": "0px" }, 400);
+                                } else {
+                                    $("#newshd .artimgnlist").animate({ "marginLeft": "-" + (hdleft - 800) + "px" }, 400);
+                                }
+                            }
+                        });
+                        $("#newshd .hd_right").click(function () {
+                            var tths = ($("#newshd ul li").length) * 200;
+                            var hdleft = parseInt($("#newshd .artimgnlist").css("marginLeft").replace("-", ""));
+                            if (hdleft <= (tths - 801)) {
+                                if ((tths - hdleft - 801) < 800) {
+                                    $("#newshd .artimgnlist").animate({ "marginLeft": "-" + (tths - 800) + "px" }, 400);
+                                } else {
+                                    $("#newshd .artimgnlist").animate({ "marginLeft": "-" + (hdleft + 800) + "px" }, 400);
+                                }
+                            } else {
+                                if (hdleft == 0 && tths > 800) {
+                                    $("#newshd .artimgnlist").animate({ "marginLeft": "-" + (tths - 800) + "px" }, 400);
+                                } else {
+                                    $("#newshd .artimgnlist").animate({ "marginLeft": "0px" }, 400);
+                                }
+                            }
+                        });
+                        $("#newshd .oTit h2").hover(function () {
+                            if (hdstra != "") {
+                                $("#newshd ul").attr("style", "");
+                                var thi = $(this).index();
+                                $("#newshd .oTit h2").addClass("cur");
+                                $(this).removeClass("cur");
+                                if (thi == "0") {
+                                    var shtmlul = hdstra;
+                                } else {
+                                    var shtmlul = hdstrb;
+                                }
+                                if ($("[data-zthd]").length > 0) {
+                                    var zthdmore = $("[data-zthd]").attr("data-zthd");
+                                    if (zthdmore != "") {
+                                        if (thi == "0") {
+                                            $("#newshd .oTit a.more").html(hdmoret)
+                                            $("#newshd .oTit a.more").attr("href", zthdmore)
+                                        } else {
+                                            $("#newshd .oTit a.more").html("更多>>")
+                                            $("#newshd .oTit a.more").attr("href", "/syhd/")
+                                        }
+                                    }
+                                }
+                                $("#newshd ul").html(shtmlul)
+                                var tths = ($("#newshd ul li").length) * 200;
+                                $("#newshd ul").css("width", tths + "px");
+                                artimglist("#newshd ul");
+                            }
+                        });
+
+                        if ($("[data-zthd]").length > 0 && hdstra != "") {
+                            var hdlink = $("[data-zthd]").attr("data-zthd");
+                            if (hdstrb != "") {
+                                Qckm = location.href.replace(/(\/|\{|\}|\:|\.|\?|\=|\&|\;|\_)/ig, "");
+                                if (Cookie.get("HD" + Qckm) != "1") { var hdmuns = "<i>" + $("#newshd ul li").length + "</i>"; } else { var hdmuns = ""; }
+                                $("#menu_art h1,.s-head-l h1").append('<a href="javascript:;" class="huodong" title="' + sappname + '有' + $("#newshd ul li").length + '个最新活动进行中">活动' + hdmuns + '</a>');
+                                $("#menu_art h1 .huodong,.s-head-l h1 .huodong").click(function () {
+                                    if ($('#menu_art').length > 0) {
+                                        if ($('#menu_art').offset().top > $(window).scrollTop()) { var tops = 250; } else { var tops = 100; }
+                                    } else {
+                                        var tops = 115;
+                                    }
+                                    $("html,body").animate({ scrollTop: $('#newshd').offset().top - tops }, 400);
+                                    Cookie.set("HD" + Qckm, "1");
+                                    if ($(this).find("i").length > 0) { $(this).find("i").remove(); }
+                                });
+                            }
+                        }
+
+
+                    }
+                }
+            }
+        });
+    }
+}
+
+function artimglist(ths) {
+    $(ths).find("img").each(function () {
+        if ($(this).height() > 130) {
+            if ($(this).height() >= $(this).width()) { $(this).css("width", "180px"); } else if ($(this).width() > $(this).height()) { $(this).css("height", "130px"); }
+        }
+    });
+}
+
+function d_goTop() {
+
+    $(window).scroll(function () {
+        var s = $(window).scrollTop();
+        if (s > 300 && s < 1500) {
+            $("#goTop,#s_goTop").css("visibility", "visible");
+        } else {
+            $("#goTop,#s_goTop").css("visibility", "hidden");
+        };
+    });
+
+
+}
+function getPlatform(PlatformStr) {
+    var sStr = PlatformStr.toUpperCase();
+    if (sStr.length > 1) {
+        if (sStr.indexOf("ANDROID") >= 0) {
+            return 1;
+        } else if (sStr.indexOf("IOS") >= 0) {
+            return 2;
+        } else return 0;
+    } else {
+        return 0;
+    }
+}
+
+function getPlatformExt() {
+    var Platform = getPlatform($('#c_soft_down').attr('data-os')), isAndroid = false, isIOS = false, isAll = false;
+    if (Platform === 1) {
+        isAndroid = true;
+    } else if (Platform === 2) {
+        isIOS = true;
+    }
+
+    $(".ul_Address li").each(function () {
+        dpf = $(this).attr("data-platform");
+        href = $(this).find("a").attr("href");
+        isIOS = (isIOS || isIOSUrl(dpf, href));
+        isAndroid = (isAndroid || isAndroidUrl(dpf, href));
+    });
+
+    if (isIOS && isAndroid) {
+        return 3;
+    } else if (isAndroid) {
+        return 1;
+    } else if (isIOS) {
+        return 2;
+    } else {
+        return 0;
+    }
+}
+
+function downNavCur(Platform) {
+    if ($('#game-down-page').length > 0) {
+        if (Platform === 1) {
+            $('.azyx').addClass('cur');
+            $('.s_system').css({ 'backgroundPosition': '0px -44px' });
+        } else if (Platform === 2) {
+            $('.pgyx').addClass('cur');
+        }
+    } else {
+        if ($('#soft-down-page').length > 0) {
+            if (Platform === 1) {
+                $('.azrj').addClass('cur');
+            } else if (Platform === 2) {
+                $('.pgrj').addClass('cur');
+            }
+        }
+    }
+}
+
+function init_soft_page(softid, catalogid) {
+    init_rate_scores(softid);
+}
+function init_rate_scores(softid) {
+    setdownhits(softid);
+    hideAds();
+}
+
+function show_soft_rate_result(data) {
+    var v1 = parseInt(data.rate1);
+    var v2 = parseInt(data.rate2);
+    $("#rate1val").html(v1);
+    $("#rate2val").html(v2);
+}
+
+function ratesoft(softid, rateval) {
+ 
+}
+function ratecallback(value) {
+    switch (value) {
+        case "true":
+            alert("感谢您的评价!");
+            break;
+        case "invalidvalue":
+            alert("抱歉,出现错误,请刷新页面后再试!");
+            break;
+        case "repeated":
+            alert("您已经评价过了,请不要重复提交!");
+            break;
+        default:
+            alert("网络错误!我们会尽快修复,抱歉!");
+    }
+    ClearRateEvent();
+}
+function ClearRateEvent() {
+    $(".rate1").removeAttr("onclick");
+    $(".rate2").removeAttr("onclick");
+}
+
+function getFocusWrap() {
+    if ($("#focusWrap").length > 0) {
+        var tmplView = document.getElementById('focusWrap-item-tmpl').innerHTML;
+        var listView = $("#focusWrapListView");
+        $.getJSON("/jsondata/DownPopup/default.json",
+			function (data) {
+			    if (data.success) {
+			        var tmpl = tmplView;
+			        var doTtmpl = doT.template(tmpl);
+			        listView.append(doTtmpl(data));
+			        $("#focusWrap").show();
+			        setFocusWrapEvent();
+			    }
+			});
+    } else {
+        $("#focusWrap").hide();
+    }
+}
+
+function setFocusWrapEvent() {
+    $('#focus').each(function () {
+        var sWidth = $('#focus').width();
+        var len = $('#focus ul li').length;
+        var index = 0;
+        var picTimer;
+        var btn = "<div class='btn'><a href='javascript:;' class='prev'></a><span>共" + len + "篇</span><a href='javascript:;' class='next'></a></div>"
+        $('#focus').append(btn);
+
+        $('#focus .prev').click(function () {
+            index -= 1;
+            if (index == -1) { index = len - 1; }
+            showPics(index);
+        });
+
+        $('#focus .next').click(function () {
+            index += 1;
+            if (index == len) { index = 0; }
+            showPics(index);
+        });
+
+        $('#focus ul').css('width', sWidth * (len));
+        $('#focus').hover(function () {
+            clearInterval(picTimer);
+        }, function () {
+            picTimer = setInterval(function () {
+                showPics(index);
+                index++;
+                if (index == len) { index = 0; }
+            }, 3000);
+        }).trigger('mouseleave');
+
+        function showPics(index) {
+            var nowLeft = -index * sWidth;
+            $('#focus ul').stop(true, false).animate({ 'left': nowLeft }, 10);
+        }
+
+        $('.focus_hd a').click(function () {
+            $('.focusWrap').hide();
+        });
+    });
+}
+
+var BASE_SITE_URL = "//www.52miji.com/";
+function setdownhits(softid) {
+    var r = getReferrer();
+    var dt = { softid: softid, ref: 'pc:' + r };
+   
+    return true;
+}
+
+function getReferrer() {
+    var ref = '';
+    if (document.referrer.length > 0) {
+        ref = document.referrer;
+    }
+    try {
+        if (ref.length == 0 && opener.location.href.length > 0) {
+            ref = opener.location.href;
+        }
+    } catch (e) { }
+    return ref
+}
+
+function hideAds() {
+    if (isNoAds()) {
+        /*if($("#c_soft_down").attr("data-appinfo")){
+			var InfoJson = eval('(' + $("#c_soft_down").attr("data-appinfo") + ')'),url='';
+			if(InfoJson.downurl){
+				url = InfoJson.downurl;
+				$(".c_soft_button").hide();
+				$(".maindown4").attr("href",url);
+				$(".maindown_m4").attr("href",url);
+				$(".downCont .pcDown").attr("href",url);	
+				$(".ul_Address li").each(function(){
+					if($(this).attr("class") != 'li_fir'){
+						$(this).find("a").attr("href",url);
+					}
+				});					
+			}
+		}*/
+    }
+}
+
+function isNoAds() {
+    var bool = -1, bool1 = -1, bool2 = -1;
+    if ($(".s-head-l").length > 0) {
+        var sTitle = $(".s-head-l h1").text().toLowerCase();
+        bool = sTitle.indexOf("穿越火线");
+        bool1 = sTitle.indexOf("cf手游");
+        bool2 = sTitle.indexOf("枪战王者");
+    }
+    return bool >= 0 || bool1 >= 0 || bool2 >= 0;
+}
+
+function positive_delay_vote(author) {
+    $.getJSON("/ajax_author.asp?a=s&author=" + author, function (result) {
+        if (result.type == 1) {
+            $("#authorRate").text(result.rate);
+        } else {
+            alert("您已经点过赞啦！感谢您的支持！")
+        }
+    });
+}
+
+function Qtab(Qa, Qb, Qc) {
+    $(Qa).find(Qb).mouseover(function () {
+        $(Qa).find(Qb).removeClass("cur"); $(this).addClass("cur");
+        $(Qa).find(Qc).hide(); $(Qa).find(Qc).eq($(this).index()).show();
+    });
+}
+
+function isday(ADate) {
+    var dd = new Date();
+    var str = ADate.replace(/-/g, "/"), date = new Date(str);
+    var y = date.getYear(), m = date.getMonth() + 1, d = date.getDate(), h = date.getHours(), n = date.getMinutes();
+    var y1 = dd.getYear(), m1 = dd.getMonth() + 1, d1 = dd.getDate()
+    if (y == y1 && m == m1 && d == d1) {
+        var newDate = true;
+    } else {
+        var newDate = false;
+    }
+    return newDate;
+}
+
+window.onload = function () {
+ 
+}
+
+$(function () {
+
+
+
+
+    if ($("#soft-down-page").length > 0) { $("#comment #userName").val("52秘籍用户"); }
+    if ($("#game-down-page").length > 0) { $("#comment #userName").val("52秘籍玩家"); }
+
+    if ($("#soft-down-page").length > 0 || $("#game-down-page").length > 0) { $("#guessWrap .guess").eq(0).show(); }
+
+    $(".q_xhsa").mouseover(function () {
+        var q_xhaa = $(this).index(".q_xhsa");
+        $(".zt_list:eq(" + q_xhaa + ") ul:eq(1)").hide();
+        $(".zt_list:eq(" + q_xhaa + ") ul:eq(0)").show();
+        $(".q_xhsb:eq(" + q_xhaa + ")").removeClass('q_xhz');
+        $(this).addClass("q_xhz");
+    });
+
+    $(".q_xhsb").mouseover(function () {
+        var q_xhbb = $(this).index(".q_xhsb");
+        $(".zt_list:eq(" + q_xhbb + ") ul:eq(0)").hide();
+        $(".zt_list:eq(" + q_xhbb + ") ul:eq(1)").show();
+        $(".q_xhsa:eq(" + q_xhbb + ")").removeClass('q_xhz');
+        $(this).addClass("q_xhz");
+    });
+});
+
+var isSubmit = false;
+function submitComment(type) {
+    if (isSubmit) {
+        //alert("您的评论已经提交，请不要重复提交谢谢!")
+        //return;
+    }
+    var ObjID = $("#objID").val(), ObjType = $("#objType").val(), pid = 0;
+    if (type == 0) {
+        var Content = $("#cmtMsg"), ContentText = Content.val();
+        var User = $("#userName").val();
+        var code = $("#comment #UserCode").val();
+    } else if (type == 1) {
+        var Content = $("#glMsg"), ContentText = Content.val();
+        var User = $("#glName").val();
+        pid = $("#glPID").val();
+        var code = $("#pingsr #UserCode").val();
+    }
+    if (ContentText == "") {
+        alert("评论的内容不能为空！");
+        Content.focus();
+        return false;
+    }
+    if (ContentText.length < 5 || ContentText.length > 1000) {
+        alert("评论的内容不能小于5 大于 1000 个字符！");
+        Content.focus();
+        return false;
+    }
+    reg = /^\d{4}$/ig;
+    rz = reg.exec(code);
+    if (!rz) {
+        alert("验证码错误，请重新输入！");
+        return false;
+    }
+    var temp = ContentText;
+    var re = /\{.+?\}/g;        // 创建正则表达式模式
+    temp = temp.replace(re, "");
+    if (temp == "") {
+        alert("对不起不能发表纯表情! 感谢您的支持！");
+        Content.focus();
+        return false;
+    }
+
+ 
+}
+
+//将提交的评论显示到页面上
+function ViewComment(type, text, pid) {
+    var d = new Date();
+    var sd = d.toLocaleString();
+
+    if (type == 0) {
+        var Temp = "<dt><span><i>顶楼 </i><b >您发表的评论</b> </span><em>发表于: <font color='red'> " + sd + " </font> </em></dt>"
+        Temp += "<dd> " + text + " <p></p></dd>"
+        $("#comment-list dl").append(Temp);
+    } else if (type == 1) {
+        var Temp = "<blockquote>  " + text + " <h4><cite> xxx </cite> " + sd + " </h4></blockquote>";
+        $("#cm" + pid).before(Temp);
+    }
+}
+
+
+
+function commentSupport(el) {
+    var AID = escape($(el).parent().attr("data-id")), Url = "id=" + AID + "&Action=3&json=1&jsoncallback=?";
+ 
+}
+
+function commentAgainst(el) {
+   
+}
+$(function () {
+    if ($("#zt_huodong").length > 0) { isnewshd("#zt_huodong"); }
+
+})
+
+
+$(function () {
+    if ($(".tab-main div .role-info").length > 0) {
+        if ($(".sum").length > 0) {
+            $(".tab-main .sum:eq(0)").attr("class", "item-a sum item clearfix");
+            $(".tab-main .sum:eq(0) .rank-list-l").attr("class", "item-l").find(".ico").removeClass("fwr");
+            $(".tab-main .sum:eq(0) .item-l a i.ico").html("");
+            $(".tab-main .sum:eq(0) .rank-list-r").attr("class", "item-r");
+            $(".tab-main .sum:eq(0) .item-r .role-info a.btn").wrapAll("<div class='link-btn elm'></div>");
+            $(".tab-main .sum:eq(0) .down-btn").after($(".tab-main .sum:eq(0) .item-r .link-btn"));
+            $(".tab-main .sum:eq(0) .link-btn a:eq(0)").attr("class", "lb");
+            $(".tab-main .sum:eq(0) .link-btn a:eq(1)").attr("class", "zq");
+            $(".tab-main .sum:eq(0) .link-btn a:eq(2)").attr("class", "lt");
+            $(".tab-main .sum:eq(0) .item-r .test-info span:contains('类型')").attr("class", "js d-line");
+            $(".tab-main .sum:eq(0) .item-r p.role-info").append($(".tab-main .sum:eq(0) .item-r .test-info .d-line"));
+            var txt = $(".tab-main .sum:eq(0) .item-r .role-info .d-line").html().substr(3);
+            $(".tab-main .sum:eq(0) .item-r .role-info .d-line").html(txt).css({ "width": "64px", "height": "20px", "padding": "3px 7px" });
+            $(".tab-main .sum:eq(0) .item-r .dotdotdot").css("display", "block").after("<div class='line'></div>");
+            $(".tab-main .sum:eq(0) .item-r .test-info span").addClass("d-inlie");
+            $(".tab-main .sum:eq(0) .item-r .test-info span.rd").attr("class", "d-inlie jf");
+            //rank2
+            $(".tab-main .sum:eq(1)").attr("class", "item-b sum item clearfix");
+            $(".tab-main .sum:eq(1) .rank-list-l").attr("class", "item-l").find(".ico").removeClass("fwr");
+            $(".tab-main .sum:eq(1) .item-l a i.ico").html("");
+            $(".tab-main .sum:eq(1) .rank-list-r").attr("class", "item-r");
+            $(".tab-main .sum:eq(1) .item-r .role-info a.btn").wrapAll("<div class='link-btn elm'></div>");
+            $(".tab-main .sum:eq(1) .down-btn").after($(".tab-main .sum:eq(1) .item-r .link-btn"));
+            $(".tab-main .sum:eq(1) .link-btn a:eq(0)").attr("class", "lb");
+            $(".tab-main .sum:eq(1) .link-btn a:eq(1)").attr("class", "zq");
+            $(".tab-main .sum:eq(1) .link-btn a:eq(2)").attr("class", "lt");
+            $(".tab-main .sum:eq(1) .item-r .test-info span:contains('类型')").attr("class", "js d-line");
+            $(".tab-main .sum:eq(1) .item-r p.role-info").append($(".tab-main .sum:eq(1) .item-r .test-info .d-line"));
+            var txt = $(".tab-main .sum:eq(1) .item-r .role-info .d-line").html().substr(3);
+            $(".tab-main .sum:eq(1) .item-r .role-info .d-line").html(txt).css({ "width": "64px", "height": "20px", "padding": "3px 7px" });
+            $(".tab-main .sum:eq(1) .item-r .dotdotdot").css("display", "block").after("<div class='line'></div>");
+            $(".tab-main .sum:eq(1) .item-r .test-info span").addClass("d-inlie");
+            $(".tab-main .sum:eq(1) .item-r .test-info span.rd").attr("class", "d-inlie jf");
+            //rank3
+            $(".tab-main .sum:eq(2)").attr("class", "item-c sum item clearfix");
+            $(".tab-main .sum:eq(2) .rank-list-l").attr("class", "item-l").find(".ico").removeClass("fwr");
+            $(".tab-main .sum:eq(2) .item-l a i.ico").html("");
+            $(".tab-main .sum:eq(2) .rank-list-r").attr("class", "item-r");
+            $(".tab-main .sum:eq(2) .item-r .role-info a.btn").wrapAll("<div class='link-btn elm'></div>");
+            $(".tab-main .sum:eq(2) .down-btn").after($(".tab-main .sum:eq(2) .item-r .link-btn"));
+            $(".tab-main .sum:eq(2) .link-btn a:eq(0)").attr("class", "lb");
+            $(".tab-main .sum:eq(2) .link-btn a:eq(1)").attr("class", "zq");
+            $(".tab-main .sum:eq(2) .link-btn a:eq(2)").attr("class", "lt");
+            $(".tab-main .sum:eq(2) .item-r .test-info span:contains('类型')").attr("class", "js d-line");
+            $(".tab-main .sum:eq(2) .item-r p.role-info").append($(".tab-main .sum:eq(2) .item-r .test-info .d-line"));
+            var txt = $(".tab-main .sum:eq(2) .item-r .role-info .d-line").html().substr(3);
+            $(".tab-main .sum:eq(2) .item-r .role-info .d-line").html(txt).css({ "width": "64px", "height": "20px", "padding": "3px 7px" });
+            $(".tab-main .sum:eq(2) .item-r .dotdotdot").css("display", "block").after("<div class='line'></div>");
+            $(".tab-main .sum:eq(2) .item-r .test-info span").addClass("d-inlie");
+            $(".tab-main .sum:eq(2) .item-r .test-info span.rd").attr("class", "d-inlie jf");
+            for (var i = 4; i < $(".tab-main .sum").length + 1; i++) {
+
+                $(".tab-main .sum:eq(" + (i - 1) + ") .rank-list-l a i.ico").html(i)
+            }
+        }
+        //num running
+        if ($(".num").length > 0) {
+            $(".tab-main .num:eq(0)").attr("class", "item-a num item clearfix");
+            $(".tab-main .num:eq(0) .rank-list-l").attr("class", "item-l").find(".ico").removeClass("fwr");
+            $(".tab-main .num:eq(0) .item-l a i.ico").html("");
+            $(".tab-main .num:eq(0) .rank-list-r").attr("class", "item-r");
+            $(".tab-main .num:eq(0) .item-r .role-info a.btn").wrapAll("<div class='link-btn elm'></div>");
+            $(".tab-main .num:eq(0) .down-btn").after($(".tab-main .num:eq(0) .item-r .link-btn"));
+            $(".tab-main .num:eq(0) .link-btn a:eq(0)").attr("class", "lb");
+            $(".tab-main .num:eq(0) .link-btn a:eq(1)").attr("class", "zq");
+            $(".tab-main .num:eq(0) .link-btn a:eq(2)").attr("class", "lt");
+            $(".tab-main .num:eq(0) .item-r .test-info span:contains('类型')").attr("class", "js d-line");
+            $(".tab-main .num:eq(0) .item-r p.role-info").append($(".tab-main .num:eq(0) .item-r .test-info .d-line"));
+            var txt = $(".tab-main .num:eq(0) .item-r .role-info .d-line").html().substr(3);
+            $(".tab-main .num:eq(0) .item-r .role-info .d-line").html(txt).css({ "width": "64px", "height": "20px", "padding": "3px 7px" });
+            $(".tab-main .num:eq(0) .item-r .dotdotdot").css("display", "block").after("<div class='line'></div>");
+            $(".tab-main .num:eq(0) .item-r .test-info span").addClass("d-inlie");
+            $(".tab-main .num:eq(0) .item-r .test-info span.rd").attr("class", "d-inlie jf");
+            //rank2
+            $(".tab-main .num:eq(1)").attr("class", "item-b num item clearfix");
+            $(".tab-main .num:eq(1) .rank-list-l").attr("class", "item-l").find(".ico").removeClass("fwr");
+            $(".tab-main .num:eq(1) .item-l a i.ico").html("");
+            $(".tab-main .num:eq(1) .rank-list-r").attr("class", "item-r");
+            $(".tab-main .num:eq(1) .item-r .role-info a.btn").wrapAll("<div class='link-btn elm'></div>");
+            $(".tab-main .num:eq(1) .down-btn").after($(".tab-main .num:eq(1) .item-r .link-btn"));
+            $(".tab-main .num:eq(1) .link-btn a:eq(0)").attr("class", "lb");
+            $(".tab-main .num:eq(1) .link-btn a:eq(1)").attr("class", "zq");
+            $(".tab-main .num:eq(1) .link-btn a:eq(2)").attr("class", "lt");
+            $(".tab-main .num:eq(1) .item-r .test-info span:contains('类型')").attr("class", "js d-line");
+            $(".tab-main .num:eq(1) .item-r p.role-info").append($(".tab-main .num:eq(1) .item-r .test-info .d-line"));
+            var txt = $(".tab-main .num:eq(1) .item-r .role-info .d-line").html().substr(3);
+            $(".tab-main .num:eq(1) .item-r .role-info .d-line").html(txt).css({ "width": "64px", "height": "20px", "padding": "3px 7px" });
+            $(".tab-main .num:eq(1) .item-r .dotdotdot").css("display", "block").after("<div class='line'></div>");
+            $(".tab-main .num:eq(1) .item-r .test-info span").addClass("d-inlie");
+            $(".tab-main .num:eq(1) .item-r .test-info span.rd").attr("class", "d-inlie jf");
+            //rank3
+            $(".tab-main .num:eq(2)").attr("class", "item-c num item clearfix");
+            $(".tab-main .num:eq(2) .rank-list-l").attr("class", "item-l").find(".ico").removeClass("fwr");
+            $(".tab-main .num:eq(2) .item-l a i.ico").html("");
+            $(".tab-main .num:eq(2) .rank-list-r").attr("class", "item-r");
+            $(".tab-main .num:eq(2) .item-r .role-info a.btn").wrapAll("<div class='link-btn elm'></div>");
+            $(".tab-main .num:eq(2) .down-btn").after($(".tab-main .num:eq(2) .item-r .link-btn"));
+            $(".tab-main .num:eq(2) .link-btn a:eq(0)").attr("class", "lb");
+            $(".tab-main .num:eq(2) .link-btn a:eq(1)").attr("class", "zq");
+            $(".tab-main .num:eq(2) .link-btn a:eq(2)").attr("class", "lt");
+            $(".tab-main .num:eq(2) .item-r .test-info span:contains('类型')").attr("class", "js d-line");
+            $(".tab-main .num:eq(2) .item-r p.role-info").append($(".tab-main .num:eq(2) .item-r .test-info .d-line"));
+            var txt = $(".tab-main .num:eq(2) .item-r .role-info .d-line").html().substr(3);
+            $(".tab-main .num:eq(2) .item-r .role-info .d-line").html(txt).css({ "width": "64px", "height": "20px", "padding": "3px 7px" });
+            $(".tab-main .num:eq(2) .item-r .dotdotdot").css("display", "block").after("<div class='line'></div>");
+            $(".tab-main .num:eq(2) .item-r .test-info span").addClass("d-inlie");
+            $(".tab-main .num:eq(2) .item-r .test-info span.rd").attr("class", "d-inlie jf");
+            for (var i = 4; i < $(".tab-main .num").length + 1; i++) {
+
+                $(".tab-main .num:eq(" + (i - 1) + ") .rank-list-l a i.ico").html(i)
+            }
+        }
+
+    }
+
+    if ($("span.pt").length > 0) {
+        $(".pt").show();
+        // $("p.role-info .name").after($(".pt"));
+        for (var i = 0; i < $(".pt").length; i++) {
+            $("p.role-info:eq(" + i + ") .name").append($(".pt:eq(" + i + ")"))
+        }
+    }
+    if ($(".sum").length > 0) {
+        $(".sum:lt(3) .role-info .name .pt span").css({ "background-size": "140%" });
+        $(".sum:lt(3) .role-info .name .pt span.ip").css("background-position", "0 -92px");
+        $(".sum:lt(3) .role-info .name .pt span.az").css("background-position", "0 -138px");
+
+        $(".sum:gt(2) .role-info .name .pt span").css({ "width": "20px", "height": "20px", "background-size": "140%" });
+        $(".sum:gt(2) .role-info .name .pt span.ip").css("background-position", "0 -73px");
+        $(".sum:gt(2) .role-info .name .pt span.az").css("background-position", "0 -110px");
+        for (var i = 0; i < $(".sum .link-btn").length; i++) {
+            if ($(".sum .link-btn:eq(" + i + ") .zq").attr("href") == "") {
+                $(".sum .link-btn:eq(" + i + ") .zq").css("background-color", "#CCC");
+                $(".sum .link-btn:eq(" + i + ") .zq").attr("href", "javascript:;");
+                $(".sum .link-btn:eq(" + i + ") .lb").css("background-color", "#CCC");
+                $(".sum .link-btn:eq(" + i + ") .lb").attr({ "href": "javascript:;", "target": "" });
+            }
+            if ($(".sum .link-btn:eq(" + i + ") .lb").attr("href") == "") {
+                $(".sum .link-btn:eq(" + i + ") .lb").css("background-color", "#CCC");
+                $(".sum .link-btn:eq(" + i + ") .lb").attr({ "href": "javascript:;", "target": "" });
+            }
+        }
+        for (var i = 0; i < $(".rank-b").length; i++) {
+            if ($(".rank-b:eq(" + i + ") .role-info .btn:eq(1)").attr("href") == "") {
+                $(".rank-b:eq(" + i + ") .role-info .btn:eq(1)").css("background-color", "#CCC");
+                $(".rank-b:eq(" + i + ") .role-info .btn:eq(1)").attr("href", "javascript:;");
+                $(".rank-b:eq(" + i + ") .role-info .btn:eq(0)").css("background-color", "#CCC");
+                $(".rank-b:eq(" + i + ") .role-info .btn:eq(0)").attr({ "href": "javascript:;", "target": "" });
+            }
+            if ($(".rank-b:eq(" + i + ") .role-info .btn:eq(0)").attr("href") == "") {
+                $(".rank-b:eq(" + i + ") .role-info .btn:eq(0)").css("background-color", "#CCC");
+                $(".rank-b:eq(" + i + ") .role-info .btn:eq(0)").attr({ "href": "javascript:;", "target": "" });
+            }
+        }
+    }
+    if ($(".num").length > 0) {
+        $(".num:lt(3) .role-info .name .pt span").css({ "background-size": "140%" });
+        $(".num:lt(3) .role-info .name .pt span.ip").css("background-position", "0 -92px");
+        $(".num:lt(3) .role-info .name .pt span.az").css("background-position", "0 -138px");
+
+        $(".num:gt(2) .role-info .name .pt span").css({ "width": "20px", "height": "20px", "background-size": "140%" });
+        $(".num:gt(2) .role-info .name .pt span.ip").css("background-position", "0 -73px");
+        $(".num:gt(2) .role-info .name .pt span.az").css("background-position", "0 -110px");
+
+        for (var i = 0; i < $(".num .link-btn").length; i++) {
+            if ($(".num .link-btn:eq(" + i + ") .zq").attr("href") == "") {
+                $(".num .link-btn:eq(" + i + ") .zq").css("background-color", "#CCC");
+                $(".num .link-btn:eq(" + i + ") .zq").attr("href", "javascript:;");
+                $(".num .link-btn:eq(" + i + ") .lb").css("background-color", "#CCC");
+                $(".num .link-btn:eq(" + i + ") .lb").attr({ "href": "javascript:;", "target": "" });
+            }
+            if ($(".num .link-btn:eq(" + i + ") .lb").attr("href") == "") {
+                $(".num .link-btn:eq(" + i + ") .lb").css("background-color", "#CCC");
+                $(".num .link-btn:eq(" + i + ") .lb").attr({ "href": "javascript:;", "target": "" });
+            }
+        }
+        for (var i = 0; i < $(".rank-b").length; i++) {
+            if ($(".rank-b:eq(" + i + ") .role-info .btn:eq(1)").attr("href") == "") {
+                $(".rank-b:eq(" + i + ") .role-info .btn:eq(1)").css("background-color", "#CCC");
+                $(".rank-b:eq(" + i + ") .role-info .btn:eq(1)").attr("href", "javascript:;");
+                $(".rank-b:eq(" + i + ") .role-info .btn:eq(0)").css("background-color", "#CCC");
+                $(".rank-b:eq(" + i + ") .role-info .btn:eq(0)").attr({ "href": "javascript:;", "target": "" });
+            }
+            if ($(".rank-b:eq(" + i + ") .role-info .btn:eq(0)").attr("href") == "") {
+                $(".rank-b:eq(" + i + ") .role-info .btn:eq(0)").css("background-color", "#CCC");
+                $(".rank-b:eq(" + i + ") .role-info .btn:eq(0)").attr({ "href": "javascript:;", "target": "" });
+            }
+        }
+
+    }
+
+})
+
+
+//the article of  page about nav
+$(function () {
+    if ($(".navigation ul li").length > 0) {
+        for (var i = 0; i < $(".navigation ul li").length; i++) {
+            if ($(".navigation ul li:eq(" + i + ") a").attr("href") == "") {
+
+                $(".navigation ul li:eq(" + i + ")").hide();
+
+            }
+        }
+
+    }
+
+
+})
+
+/*
+	//there is your want?
+
+$(function(){
+	
+
+	if($("center .oTit h2:contains('这些是您想要的吗')").length>0){
+		//$(".rel_w").css("display","block");
+		 //$("center .oTit h2:contains('这些是您想要的吗')").parent().after($(".rel_w"));
+	}
+
+	
+	
+	})
+*/
+
+
+$(function () {
+    if ($(".newweek").length > 0) {
+        var num = 0;
+        $(".newweek ul.circle li").mouseover(function () {
+            num = $(".newweek ul.circle li").index(this);
+            buttonShow(num);
+        })
+        var timer = setInterval(function () {
+            buttonShow(num);
+            num++;
+            if (num == $(".newweek ul.circle li").length) {
+                num = 0;
+            }
+        }, 5000)
+
+    }
+})
+var num = 0;
+var timer = null;
+function buttonShow(i) {
+
+    $(".newweek ul.circle li").eq(i).addClass("cur").siblings("li").removeClass("cur");
+    $(".newweek ul.tg li").eq(i).stop(true, true).fadeIn(1200).siblings("li").fadeOut(1200);
+}
+$(".newweek ul.tg").hover(function () {
+    if (timer) {
+        clearInterval(timer);
+    }
+},
+	function () {
+	    timer = setInterval(function () {
+	        buttonShow(num);
+	        num++;
+	        if (num == $(".newweek .circle li").length) {
+	            num == 0;
+	        }
+	    }, 5000)
+	}
+
+	)
+
+$(function () {
+
+    /*init_topnavlinks();*/
+    if ($(".lists_lb").length > 0) { Qtab(".lists_lb", "ol li", "ul"); }
+    if ($(".listz_rg").length > 0) { Qtab(".listz_rg", ".listz_title ul li", ".kfkc_list"); }
+
+
+
+
+});
+
+//weixin panduan
+$(function () {
+
+    if ($(".side-pos").length > 0) {
+        $(".QRcode").css({ "top": "72%", "margin-right": "610px" });
+
+    }
+
+})
+
+//checkmore
+$(function () {
+    if ($("#checkmore").length > 0) {
+        var time = 0;
+        $(".topitem .rkitm:gt(19)").hide();
+        $("#checkmore").click(function () {
+            time++;
+            if (time == 1) {
+                $(".topitem .rkitm:lt(50)").show();
+            }
+            if (time == 2) {
+                $(".topitem .rkitm:lt(80)").show();
+            }
+            if (time == 3) {
+                $(".topitem .rkitm:lt(99)").show();
+                $(this).text("收起");
+                $(this).addClass("checkup");
+            }
+            if (time == 4) {
+                $(".topitem .rkitm:gt(19)").hide();
+                $(this).text("查看更多");
+                $(this).removeClass("checkup").addClass("checkmore");
+                return time = 0;
+            }
+
+        })
+    }
+
+})
+
+//new top
+
+$(function () {
+    if ($(".topitem").length > 0) {
+        $(".topitem .rkitm:eq(0) .rkl i.icp").text("");
+        $(".topitem .rkitm:eq(0) .rkl i.icp").css({ "background-image": "url(/images/ico-1.png)", "background-repeat": "no-repeat", "width": "118px", "height": "102px", "top": "-28px", "left": "-30px", "background-position": "0 0" });
+        $(".topitem .rkitm:eq(1) .rkl i.icp").text("");
+        $(".topitem .rkitm:eq(1) .rkl i.icp").css({ "background-image": "url(/images/ico-1.png)", "background-repeat": "no-repeat", "width": "118px", "height": "102px", "top": "-28px", "left": "-30px", "background-position": "-120px 0" });
+        $(".topitem .rkitm:eq(2) .rkl i.icp").text("");
+        $(".topitem .rkitm:eq(2) .rkl i.icp").css({ "background-image": "url(/images/ico-1.png)", "background-repeat": "no-repeat", "width": "118px", "height": "102px", "top": "-28px", "left": "-30px", "background-position": "-240px 0" });
+        $(".topitem .msu").each(function () {
+            var txt = $(this).text();
+            $(this).text(txt.replace(/\[.*?\]/g, " "));
+            var txt2 = $(this).text();
+            $(this).text(txt2.replace(/\[\D*\.$/, " "));
+            /*	var txt3=$(this).text();
+                $(this).text(txt3.replace(/\[.*?\]/," "));
+                var txt4=$(this).text();
+                */
+            //$(this).text(txt4.replace(/\[(title=b)*/," "));
+
+        })
+        for (var i = 0; i < $(".topitem .rkitm").length; i++) {
+            if ($(".topitem .lby:eq(" + i + ") .zqt").attr("href") == "") {
+                $(".topitem .lby:eq(" + i + ") .zqt").css({ "background": "#888", "color": "#eee" });
+                $(".topitem .lby:eq(" + i + ") .zqt").attr("href", "javascript:;");
+                var nlink = $(".topitem .rkitm:eq(" + i + ") .downsoft").attr("href");
+                $(".topitem .rkr:eq(" + i + ") .tip h3 a").attr("href", nlink);
+            }
+            if ($(".topitem .lby:eq(" + i + ") .hd").attr("href") == "") {
+                $(".topitem .lby:eq(" + i + ") .hd").css({ "background": "#888", "color": "#eee" });
+                $(".topitem .lby:eq(" + i + ") .hd").attr("href", "javascript:;");
+            }
+            if ($(".topitem .lby:eq(" + i + ") .lb").attr("href") == "") {
+                $(".topitem .lby:eq(" + i + ") .lb").css({ "background": "#888", "color": "#eee" });
+                $(".topitem .lby:eq(" + i + ") .lb").attr("href", "javascript:;");
+            }
+            if ($(".topitem .lbyo:eq(" + i + ") .zqto").attr("href") == "") {
+                $(".topitem .lbyo:eq(" + i + ") .zqto").css({ "background": "#888", "color": "#eee" });
+                $(".topitem .lbyo:eq(" + i + ") .zqto").attr("href", "javascript:;");
+                var nlink = $(".topitem .rkitm:eq(" + i + ") .downsoft").attr("href");
+                $(".topitem .rkr:eq(" + i + ") .tip h3 a").attr("href", nlink);
+            }
+        }
+        $(".topitem .rkitm .rkr .zto").each(function () {
+            var wb = $(this).text();
+            if (wb == "运营中") {
+                $(this).wrap("<a href='/Kaice/yunying.html' class='ztoa' target='_blank'></a>");
+            }
+            if (wb == "不删档内测") {
+                $(this).wrap("<a href='/Kaice/neices.html' class='ztoa' target='_balnk'></a>");
+            }
+            if (wb == "删档内测") {
+                $(this).wrap("<a href='/Kaice/neicen.html' class='ztoa' target='_balnk'></a>");
+            }
+            if (wb == "删档封测" || wb == "封测") {
+                $(this).wrap("<a href='/Kaice/fengce.html' class='ztoa' target='_balnk'></a>");
+            }
+            if (wb == "未发行") {
+                $(this).wrap("<a href='/Kaice/weifaxing.html' class='ztoa' target='_balnk'></a>");
+            }
+            if (wb == "公测") {
+                $(this).wrap("<a href='/Kaice/gongce.html' class='ztoa' target='_balnk'></a>");
+            }
+        })
+    }
+})
+
+function oTab(nav, nc, cl, con, co) {
+    nav.hover(function () {
+        var This = $(this);
+        This.addClass(nc).siblings(cl).removeClass(nc);
+        var n = This.index();
+        con.eq(n - 2).show().siblings(co).hide();
+    })
+
+}
+$(function () {
+    if ($(".listt_lb i").length > 0) {
+        oTab($(".listt_lb i"), "cur", "i", $(".listt_lb_ul .clearfix"), ".clearfix");
+    }
+
+})
+
+//wx show	
+function tabShow(otab, con) {
+    otab.hover(function () {
+        con.show();
+    },
+	function () {
+	    con.hide();
+	}
+	)
+
+}
+function hqWx() {
+    var op = $("#wx-sy");
+    var wx = op.find(".swx");
+    tabShow(op, wx);
+}
+$(function () {
+    if ($("#wx-sy").length > 0) {
+        hqWx();
+    }
+})
+
+//pinlun  tab
+$(function () {
+    if ($(".plrank").length > 0) { plTab(); }
+    $('.fximg').click(function () {
+        if ($(this).attr('style')) {
+            $(this).removeAttr('style');
+        } else {
+            $('.fximg').removeAttr('style');
+            $(this).attr('style', 'height:auto;max-height:600px;max-width:800px;');
+        }
+    });
+})
+function plTab() {
+    var tab = $(".plrank a");
+    var com = $("#comment-list dl");
+    tab.click(function () {
+        var e = $(this);
+        var n = e.index();
+        e.addClass("plcur").siblings("a").removeClass("plcur");
+        com.eq(n).show().siblings("dl").hide();
+    })
+
+}
+
+//applicate
+$(function () {
+    if ($("[data-appliid]").length > 0) {
+        var id = $("[data-appliid]").attr("data-appliid");
+        if (id == 0) {
+            $("#Applicate").remove();
+        }
+    }
+})
+
+
+// 选项卡
+function down_tab(tab_k, tab_con, tab_dz) {
+    var $div_li = $(tab_k);
+    var timeout;
+    if (tab_dz == "mouseover") {
+        $div_li.mouseover(function () {
+            $(this).addClass("active").siblings().removeClass("active");
+            var index = $div_li.index(this);
+            $(tab_con).eq(index).show().siblings().hide();
+        })
+    }
+}
+down_tab('.character_nav a','.characters_ ul','mouseover')

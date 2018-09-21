@@ -1,0 +1,108 @@
+
+window.onload = function(){
+$(".artimglists img").each(function(){
+if($(this).height()>130){
+if($(this).height()>$(this).width()){$(this).css("width","180px");}else if($(this).width()>$(this).height()){$(this).css("height","130px");}
+}
+});
+
+                var sst=$(".snopshot");
+                    if(sst.length==1){
+                    	sst.css({"position":"relative","text-align":"center"}).find("img").css({"max-width":"600px","max-height":"550px;"}).next(".elementOverlay").hide();
+                    	$(".snap-shot-btn").hide();
+                    }
+                    else if(sst.length==2){
+                    	sst.css({"position":"relative","float":"left"}).find("img").css({"max-width":"400px","margin-right":"10px"}).next(".elementOverlay").hide();
+                    	$(".snap-shot-btn").hide();
+                    }
+                    else{
+	                  var img = new Image();
+	                                	
+	               img.src =  $(".snapShotCont li").eq(0).find("img").attr("src");
+	                  //window.onload=function(){
+	                    var imgWidth = img.width;
+	                    var imgHeight = img.height;
+	                    if(imgWidth > imgHeight){
+	                    	imgHeight = 343;
+	                    	imgWidth = 600;
+	                    }else{
+	                    	imgHeight = 600;
+	                    	imgWidth = 343;
+	                    }
+	                    var snapShotWrap = new posterTvGrid(
+	                      'snapShotWrap',
+	                      {
+	                        imgHeight : imgHeight,
+	                        imgWidth : imgWidth,
+	                        imgP : parseInt(imgWidth/1.2)
+	                      }
+	                    );
+	                  //}; 
+                    }
+  }
+
+if($("#mtab").length>0){
+	var html = $("#mtab").prop("outerHTML");
+	$("body").append('<div class="wap"><div class="wap-box">'+html+'</div></div>');
+	var mainBoxTop = $(".main_box").offset().top;
+	var scroll = $(document).scrollTop();
+	if(scroll > mainBoxTop) {
+		$(".wap").css("display","block");
+	}
+	$(window).scroll(function() {
+		var scrolls = $(document).scrollTop();
+		if(scrolls > mainBoxTop) {
+			$(".wap").css("display","block");
+		} else {
+			$(".wap").css("display","none");
+		}
+	});
+	$(".wap-box ul li").click(function(){
+		$(this).addClass("cur").siblings().removeClass("cur");
+	});
+	var num1 = $("#rate1val").text();
+	$(".rate1").click(function(){
+		num1++;
+		$("#rate1val").text(num1);
+	});
+	var num2 = $("#rate2val").text();
+	$(".rate2").click(function(){
+		num2++;
+		$("#rate2val").text(num2);
+	});
+	
+	
+//	var downlink = $(".down_lj>a").attr("href");
+//	
+//	$("#addressWrap .oTit").after('<a class="dxl" style="display:block;width:660px; height:80px; overflow:hidden;zoom:1; margin-bottom:10px;" href="'+downlink+'" target="_blank"><img src="http://static.qqxzb.com/pc/cj/600x70_0816.gif"></a>');
+//	
+//	$("#uldownlink").before('<ul class="topli" ><li><span><a href="'+downlink+'" class="j-downlink" target="_blank">本地高速下载1</a></span></li><li><span><a href="'+downlink+'" class="j-downlink" target="_blank">本地高速下载2</a></span></li></ul><span class="gname">高速下载</span>');
+//
+//	$(".uldownlink").before('<ul class="topli" ><li><span><a href="'+downlink+'" class="j-downlink" target="_blank">本地高速下载1</a></span></li><li><span><a href="'+downlink+'" class="j-downlink" target="_blank">本地高速下载2</a></span></li></ul><span class="gname">高速下载</span>');
+//	
+//	$("#addressWrap .ad_l").append('<a class="sxl" style="display:block; background:#fff;width:290px;height:80px; text-align:center;" href="'+downlink+'" target="_blank"><img src="http://static.yiwan.com/pc/images/ad_down_pg.png" /></a>');
+	var tg_name = $(".s-head-l h1").text().replace(/[\ |\~|\`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\-|\_|\+|\=|\||\\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?]/g,"")
+	$(".downbtn ul").append('<li><a class="soft_tg_pc" href="http://22188.xc.08an.com/xiaz/' + tg_name + '@698_2.exe" ><img  src="/Skin/images/soft-tg-pc.png"></a></li>')
+}
+
+
+//下载统计
+if($("#EntityID").length>0){
+	$(".down_bd .down2").click(function(){
+		var i = new Image();
+		i.src = "http://xz.tongji.52miji.com/count.do?ch=pcm52miji&sid=" + $("#EntityID").val() + "&name=" + $(".s-head-l h1").text();
+	});
+}
+
+$('.down_gs').click(function() {
+	var i = new Image();
+	i.src = "http://tongji.tt.52miji.com/sys/count.do?sc=a2V5cz1wYy0teHoteWQtZ3N4enM=";
+});
+
+$('.soft_tg_pc').click(function() {
+	var i = new Image();
+	i.src = "http://tongji.tt.52miji.com/sys/count.do?sc=a2V5cz10cGwwMDA4ODg=";
+});
+
+
+

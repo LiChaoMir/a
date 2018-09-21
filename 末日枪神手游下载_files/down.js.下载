@@ -1,0 +1,55 @@
+$(function(){
+$(".swipebox-video").click(function(){
+$(".video-pop").show();
+$("#da91c291-video").get(0).play();
+})
+$(".close-v").click(function(){
+$(".video-pop").hide();
+$("#da91c291-video").get(0).pause();
+})
+})
+
+
+
+$(function(){
+	if($("#slide").length>0){
+		$("#slide").slide({mainCell:".bd",autoPage:true,effect:"leftLoop",autoPlay:true});
+	}
+})  
+
+
+$(function(){
+			//预约
+	if($(".yuyue").length>0){
+		$('.yuyue').click(function(){
+			$('.yuyuemengban,.yuyuewrap').show();
+			var i = new Image();
+			i.src = "http://tongji.tt.52miji.com/sys/count.do?sc=a2V5cz1wY195dXl1ZQ==";
+		});
+		$('.yuyuemengban,.yuyuewrap .closebtn,.yuyuewrap .yuyuebtn_br').click(function(){
+			$('.yuyuemengban,.yuyuewrap').hide();
+		});	
+		$(".yuyuebtn_bs").click(function(){
+			var reg = /^1[3|4|5|7|8][0-9]{9}$/;
+			var phoneNum = $(".yuyue_con .phone").val();
+			var flag = reg.test(phoneNum); 
+			if(flag){
+				alert("预约成功");
+				$('.yuyuemengban,.yuyuewrap').hide();
+			}else{
+				alert("您输入的手机号有误");
+			}
+		});
+	}		
+})  
+
+$(function(){
+	if($(".addressnav").length>0){
+		$(".addressnav span").hover(function(){
+			$(".addressnav span").removeClass("hover");
+			$(this).addClass("hover");
+		$(".addresscon").hide().eq($(this).index()).show();
+
+		})
+	}
+})  
